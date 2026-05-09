@@ -1632,8 +1632,12 @@
         return;
       }
       const current = pack().cards[state.cardIndex % pack().cards.length];
-      const utterance = new SpeechSynthesisUtterance(current.term);
-      utterance.lang = studySpeechLang();
+      const speech = buildSpeechPlan({ text: current.term, tokens: [current.term] });
+      const utterance = new SpeechSynthesisUtterance(speech.text);
+      utterance.lang = speech.lang;
+      if (speech.voice) {
+        utterance.voice = speech.voice;
+      }
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(utterance);
     }
@@ -1650,8 +1654,12 @@
         return;
       }
       feedbackEl.textContent = "";
-      const utterance = new SpeechSynthesisUtterance(spokenSentence(tokens));
-      utterance.lang = studySpeechLang();
+      const speech = buildSpeechPlan({ text: spokenSentence(tokens), tokens });
+      const utterance = new SpeechSynthesisUtterance(speech.text);
+      utterance.lang = speech.lang;
+      if (speech.voice) {
+        utterance.voice = speech.voice;
+      }
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(utterance);
     }
@@ -1728,6 +1736,46 @@
 
     function studySpeechLang() {
       return { english: "en-US", spanish: "es-ES", mandarin: "zh-CN" }[state.studyLanguage] || "en-US";
+    }
+
+    function buildSpeechPlan({ text, tokens = [] }) {
+      const defaultLang = studySpeechLang();
+      if (state.studyLanguage !== "mandarin") {
+        const voice = pickVoiceByLang(defaultLang);
+        return { text, lang: voice ? voice.lang : defaultLang, voice };
+      }
+
+      const zhVoice = pickVoiceByPrefixes(["zh-cn", "zh", "cmn"]);
+      if (zhVoice) {
+        return { text, lang: zhVoice.lang || "zh-CN", voice: zhVoice };
+      }
+
+      // If no Chinese voice exists, read pinyin fluently instead of spelling Han characters.
+      const orderedTokens = state.studyLanguage === "mandarin" ? [...tokens].reverse() : tokens;
+      const pinyinText = orderedTokens
+        .map((token) => getMandarinPinyin(token) || token)
+        .join(" ")
+        .replace(/\s+/g, " ")
+        .trim();
+      const fallbackVoice = pickVoiceByLang(pinyinUiLang());
+      return {
+        text: pinyinText || text,
+        lang: fallbackVoice ? fallbackVoice.lang : pinyinUiLang(),
+        voice: fallbackVoice
+      };
+    }
+
+    function pickVoiceByLang(langCode) {
+      return pickVoiceByPrefixes([String(langCode).toLowerCase()]);
+    }
+
+    function pickVoiceByPrefixes(prefixes) {
+      const voices = window.speechSynthesis.getVoices() || [];
+      const loweredPrefixes = prefixes.map((prefix) => String(prefix).toLowerCase());
+      return voices.find((voice) => {
+        const lang = String(voice.lang || "").toLowerCase();
+        return loweredPrefixes.some((prefix) => lang.startsWith(prefix));
+      }) || null;
     }
 
     function renderTokenButton(buttonClass, token, extraAttributes = "") {
