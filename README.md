@@ -48,3 +48,19 @@ This repository is already configured for GitHub Pages with Actions.
 Site URL pattern:
 
 https://YOUR_USERNAME.github.io/YOUR_REPO/
+
+## Quick Update Script
+
+To make updates faster, use:
+
+./scripts/update_repo.sh "Describe your update"
+
+This script will:
+
+1. Stage all changes.
+2. Create a commit.
+3. Push to origin/main.
+
+Script location:
+
+- [scripts/update_repo.sh](scripts/update_repo.sh)
