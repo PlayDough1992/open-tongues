@@ -454,6 +454,7 @@
             <div class="feedback" id="phrase-feedback"></div>
             <div class="action-row" style="justify-content: flex-start;">
               <button class="primary" id="check-phrase-button" data-i18n="checkPhrase">Check phrase</button>
+              <button class="gold" id="speak-phrase-button" data-i18n="speakSelection">Speak selection</button>
               <button class="secondary" id="clear-phrase-button" data-i18n="clearPhrase">Clear</button>
               <button class="warm" id="next-phrase-button" data-i18n="nextPhrase">Next phrase</button>
             </div>
@@ -477,6 +478,7 @@
             <div class="feedback" id="advanced-feedback"></div>
             <div class="action-row" style="justify-content: flex-start;">
               <button class="primary" id="check-advanced-button" data-i18n="checkAdvanced">Check answer</button>
+              <button class="gold" id="speak-advanced-button" data-i18n="speakSelection">Speak selection</button>
               <button class="secondary" id="clear-advanced-button" data-i18n="clearAdvanced">Clear</button>
               <button class="warm" id="next-advanced-button" data-i18n="nextAdvanced">Next challenge</button>
             </div>
@@ -795,6 +797,7 @@
         phraseLab: "Phrase lab",
         phraseEmptyState: "Tap the word tiles to build the translation.",
         checkPhrase: "Check phrase",
+        speakSelection: "Speak selection",
         clearPhrase: "Clear",
         nextPhrase: "Next phrase",
         advancedLab: "Advanced learning",
@@ -828,6 +831,7 @@
         phraseNeedBuild: "Build the phrase before checking it.",
         phraseCorrect: "Correct phrase. Move to the next one.",
         phraseIncorrect: "Close, but not correct. Target: {target}",
+        speakNeedBuild: "Build a sentence first, then speak it.",
         advancedNeedBuild: "Build the sentence before checking.",
         advancedCorrect: "Excellent. That sentence is correct.",
         advancedIncorrect: "Not quite. Try again.",
@@ -879,6 +883,7 @@
         phraseLab: "Laboratorio de frases",
         phraseEmptyState: "Toca las fichas para construir la traducción.",
         checkPhrase: "Comprobar frase",
+        speakSelection: "Escuchar selección",
         clearPhrase: "Limpiar",
         nextPhrase: "Siguiente frase",
         advancedLab: "Aprendizaje avanzado",
@@ -912,6 +917,7 @@
         phraseNeedBuild: "Construye la frase antes de comprobarla.",
         phraseCorrect: "Frase correcta. Pasa a la siguiente.",
         phraseIncorrect: "Casi, pero no es correcta. Objetivo: {target}",
+        speakNeedBuild: "Primero construye una oración y luego escúchala.",
         advancedNeedBuild: "Construye la oración antes de comprobar.",
         advancedCorrect: "Excelente. Esa oración es correcta.",
         advancedIncorrect: "Aún no. Inténtalo de nuevo.",
@@ -963,6 +969,7 @@
         phraseLab: "Atelier de phrases",
         phraseEmptyState: "Touchez les tuiles pour construire la traduction.",
         checkPhrase: "Vérifier la phrase",
+        speakSelection: "Lire la sélection",
         clearPhrase: "Effacer",
         nextPhrase: "Phrase suivante",
         advancedLab: "Apprentissage avancé",
@@ -996,6 +1003,7 @@
         phraseNeedBuild: "Construisez la phrase avant de la vérifier.",
         phraseCorrect: "Phrase correcte. Passez à la suivante.",
         phraseIncorrect: "Presque, mais ce n'est pas correct. Cible : {target}",
+        speakNeedBuild: "Construisez d'abord une phrase, puis lancez la lecture.",
         advancedNeedBuild: "Construisez la phrase avant de vérifier.",
         advancedCorrect: "Excellent. Cette phrase est correcte.",
         advancedIncorrect: "Pas encore. Réessayez.",
@@ -1047,6 +1055,7 @@
         phraseLab: "フレーズラボ",
         phraseEmptyState: "単語タイルを押して訳文を組み立ててください。",
         checkPhrase: "フレーズを確認",
+        speakSelection: "選択文を読み上げ",
         clearPhrase: "クリア",
         nextPhrase: "次のフレーズ",
         advancedLab: "上級学習",
@@ -1080,6 +1089,7 @@
         phraseNeedBuild: "確認する前にフレーズを組み立ててください。",
         phraseCorrect: "正しいフレーズです。次へ進みましょう。",
         phraseIncorrect: "惜しいですが不正解です。正解: {target}",
+        speakNeedBuild: "まず文を組み立ててから読み上げてください。",
         advancedNeedBuild: "確認する前に文を組み立ててください。",
         advancedCorrect: "素晴らしいです。その文は正解です。",
         advancedIncorrect: "もう少しです。もう一度試してください。",
@@ -1091,62 +1101,62 @@
     };
 
     const mandarinPinyin = {
-      "你好，": "ni hao",
-      "我": "wo",
-      "叫": "jiao",
-      "票": "piao",
-      "今天": "jin tian",
-      "请": "qing",
-      "给": "gei",
-      "水": "shui",
-      "朋友": "peng you",
-      "书": "shu",
-      "车站": "che zhan",
-      "在": "zai",
-      "哪里？": "na li",
-      "谢谢": "xie xie",
-      "右边": "you bian",
-      "和": "he",
-      "老师": "lao shi",
-      "工作": "gong zuo",
-      "明天": "ming tian",
-      "路": "lu",
-      "我的": "wo de",
-      "家人": "jia ren",
-      "来": "lai",
-      "手机": "shou ji",
-      "学习，": "xue xi",
-      "因为": "yin wei",
-      "想": "xiang",
-      "自由": "zi you",
-      "以前": "yi qian",
-      "往": "wang",
-      "左边": "zuo bian",
-      "走": "zou",
-      "需要": "xu yao",
-      "通常": "tong chang",
-      "办公室": "ban gong shi",
-      "我们": "wo men",
-      "机场": "ji chang",
-      "见面": "jian mian",
-      "药店": "yao dian",
-      "医院": "yi yuan",
-      "附近": "fu jin",
-      "电脑": "dian nao",
-      "笔记本": "bi ji ben",
-      "回答": "hui da",
-      "问题": "wen ti",
-      "穿过": "chuan guo",
-      "这条路": "zhe tiao lu",
-      "再": "zai",
-      "绕": "rao",
-      "从不": "cong bu",
-      "错过": "cuo guo",
-      "早饭": "zao fan",
-      "下周": "xia zhou",
-      "可以": "ke yi",
-      "学得": "xue de",
-      "更多": "geng duo"
+      "你好，": "nǐ hǎo",
+      "我": "wǒ",
+      "叫": "jiào",
+      "票": "piào",
+      "今天": "jīn tiān",
+      "请": "qǐng",
+      "给": "gěi",
+      "水": "shuǐ",
+      "朋友": "péng yǒu",
+      "书": "shū",
+      "车站": "chē zhàn",
+      "在": "zài",
+      "哪里？": "nǎ lǐ",
+      "谢谢": "xiè xie",
+      "右边": "yòu biān",
+      "和": "hé",
+      "老师": "lǎo shī",
+      "工作": "gōng zuò",
+      "明天": "míng tiān",
+      "路": "lù",
+      "我的": "wǒ de",
+      "家人": "jiā rén",
+      "来": "lái",
+      "手机": "shǒu jī",
+      "学习，": "xué xí",
+      "因为": "yīn wèi",
+      "想": "xiǎng",
+      "自由": "zì yóu",
+      "以前": "yǐ qián",
+      "往": "wǎng",
+      "左边": "zuǒ biān",
+      "走": "zǒu",
+      "需要": "xū yào",
+      "通常": "tōng cháng",
+      "办公室": "bàn gōng shì",
+      "我们": "wǒ men",
+      "机场": "jī chǎng",
+      "见面": "jiàn miàn",
+      "药店": "yào diàn",
+      "医院": "yī yuàn",
+      "附近": "fù jìn",
+      "电脑": "diàn nǎo",
+      "笔记本": "bǐ jì běn",
+      "回答": "huí dá",
+      "问题": "wèn tí",
+      "穿过": "chuān guò",
+      "这条路": "zhè tiáo lù",
+      "再": "zài",
+      "绕": "rào",
+      "从不": "cóng bù",
+      "错过": "cuò guò",
+      "早饭": "zǎo fàn",
+      "下周": "xià zhōu",
+      "可以": "kě yǐ",
+      "学得": "xué de",
+      "更多": "gèng duō"
     };
 
     const storageKey = "open-tongues-progress-v2";
@@ -1232,9 +1242,11 @@
     document.getElementById("next-card-button").addEventListener("click", nextCard);
     document.getElementById("next-quiz-button").addEventListener("click", generateQuiz);
     document.getElementById("check-phrase-button").addEventListener("click", checkPhrase);
+    document.getElementById("speak-phrase-button").addEventListener("click", () => speakBuiltSelection("phrase"));
     document.getElementById("clear-phrase-button").addEventListener("click", clearPhrase);
     document.getElementById("next-phrase-button").addEventListener("click", generatePhrase);
     document.getElementById("check-advanced-button").addEventListener("click", checkAdvanced);
+    document.getElementById("speak-advanced-button").addEventListener("click", () => speakBuiltSelection("advanced"));
     document.getElementById("clear-advanced-button").addEventListener("click", clearAdvanced);
     document.getElementById("next-advanced-button").addEventListener("click", generateAdvanced);
 
@@ -1621,7 +1633,25 @@
       }
       const current = pack().cards[state.cardIndex % pack().cards.length];
       const utterance = new SpeechSynthesisUtterance(current.term);
-      utterance.lang = { english: "en-US", spanish: "es-ES", mandarin: "zh-CN" }[state.studyLanguage] || "en-US";
+      utterance.lang = studySpeechLang();
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function speakBuiltSelection(mode) {
+      if (!("speechSynthesis" in window)) {
+        alert(t("speechUnavailable"));
+        return;
+      }
+      const tokens = mode === "advanced" ? builtAdvanced : builtPhrase;
+      const feedbackEl = mode === "advanced" ? el.advancedFeedback : el.phraseFeedback;
+      if (!tokens.length) {
+        feedbackEl.textContent = t("speakNeedBuild");
+        return;
+      }
+      feedbackEl.textContent = "";
+      const utterance = new SpeechSynthesisUtterance(spokenSentence(tokens));
+      utterance.lang = studySpeechLang();
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(utterance);
     }
@@ -1688,6 +1718,16 @@
     function composedAttempt(tokens) {
       const ordered = state.studyLanguage === "mandarin" ? [...tokens].reverse() : tokens;
       return ordered.join(" ").replace(/\s+/g, " ").trim();
+    }
+
+    function spokenSentence(tokens) {
+      const ordered = state.studyLanguage === "mandarin" ? [...tokens].reverse() : tokens;
+      const separator = state.studyLanguage === "mandarin" ? "" : " ";
+      return ordered.join(separator).replace(/\s+/g, " ").trim();
+    }
+
+    function studySpeechLang() {
+      return { english: "en-US", spanish: "es-ES", mandarin: "zh-CN" }[state.studyLanguage] || "en-US";
     }
 
     function renderTokenButton(buttonClass, token, extraAttributes = "") {
