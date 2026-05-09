@@ -267,6 +267,20 @@
     .answer.correct { background: rgba(47, 125, 50, 0.14); border-color: rgba(47, 125, 50, 0.35); }
     .answer.wrong { background: rgba(181, 56, 47, 0.14); border-color: rgba(181, 56, 47, 0.35); }
 
+    .token-main {
+      display: block;
+      line-height: 1.2;
+    }
+
+    .token-note {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      line-height: 1.2;
+      letter-spacing: 0.01em;
+    }
+
     .rtl-build {
       direction: rtl;
       text-align: right;
@@ -1076,6 +1090,65 @@
       }
     };
 
+    const mandarinPinyin = {
+      "你好，": "ni hao",
+      "我": "wo",
+      "叫": "jiao",
+      "票": "piao",
+      "今天": "jin tian",
+      "请": "qing",
+      "给": "gei",
+      "水": "shui",
+      "朋友": "peng you",
+      "书": "shu",
+      "车站": "che zhan",
+      "在": "zai",
+      "哪里？": "na li",
+      "谢谢": "xie xie",
+      "右边": "you bian",
+      "和": "he",
+      "老师": "lao shi",
+      "工作": "gong zuo",
+      "明天": "ming tian",
+      "路": "lu",
+      "我的": "wo de",
+      "家人": "jia ren",
+      "来": "lai",
+      "手机": "shou ji",
+      "学习，": "xue xi",
+      "因为": "yin wei",
+      "想": "xiang",
+      "自由": "zi you",
+      "以前": "yi qian",
+      "往": "wang",
+      "左边": "zuo bian",
+      "走": "zou",
+      "需要": "xu yao",
+      "通常": "tong chang",
+      "办公室": "ban gong shi",
+      "我们": "wo men",
+      "机场": "ji chang",
+      "见面": "jian mian",
+      "药店": "yao dian",
+      "医院": "yi yuan",
+      "附近": "fu jin",
+      "电脑": "dian nao",
+      "笔记本": "bi ji ben",
+      "回答": "hui da",
+      "问题": "wen ti",
+      "穿过": "chuan guo",
+      "这条路": "zhe tiao lu",
+      "再": "zai",
+      "绕": "rao",
+      "从不": "cong bu",
+      "错过": "cuo guo",
+      "早饭": "zao fan",
+      "下周": "xia zhou",
+      "可以": "ke yi",
+      "学得": "xue de",
+      "更多": "geng duo"
+    };
+
     const storageKey = "open-tongues-progress-v2";
     const defaults = {
       studyLanguage: "english",
@@ -1409,7 +1482,7 @@
       el.phraseSource.textContent = currentPhrase.source;
       el.phraseHint.textContent = t("phraseHint", { target: currentPhrase.target });
       el.phraseFeedback.textContent = "";
-      el.tokenGrid.innerHTML = shuffle([...currentPhrase.tiles]).map((tile) => `<button class="token" data-token="${escapeHtml(tile)}">${tile}</button>`).join("");
+      el.tokenGrid.innerHTML = shuffle([...currentPhrase.tiles]).map((tile) => renderTokenButton("token", tile)).join("");
       el.tokenGrid.querySelectorAll(".token").forEach((button) => {
         button.addEventListener("click", () => {
           builtPhrase.push(button.dataset.token);
@@ -1425,7 +1498,7 @@
         el.buildArea.innerHTML = `<span class="empty">${t("phraseEmptyState")}</span>`;
         return;
       }
-      el.buildArea.innerHTML = builtPhrase.map((token, index) => `<button class="built-token" data-index="${index}">${token}</button>`).join("");
+      el.buildArea.innerHTML = builtPhrase.map((token, index) => renderTokenButton("built-token", token, `data-index="${index}"`)).join("");
       el.buildArea.querySelectorAll(".built-token").forEach((button) => {
         button.addEventListener("click", () => removePhraseToken(Number(button.dataset.index)));
       });
@@ -1481,7 +1554,7 @@
       builtAdvanced = [];
       el.advancedSource.textContent = currentAdvanced.source;
       el.advancedFeedback.textContent = "";
-      el.advancedTokenGrid.innerHTML = shuffle([...currentAdvanced.tiles]).map((tile) => `<button class="token" data-token="${escapeHtml(tile)}">${tile}</button>`).join("");
+      el.advancedTokenGrid.innerHTML = shuffle([...currentAdvanced.tiles]).map((tile) => renderTokenButton("token", tile)).join("");
       el.advancedTokenGrid.querySelectorAll(".token").forEach((button) => {
         button.addEventListener("click", () => {
           builtAdvanced.push(button.dataset.token);
@@ -1497,7 +1570,7 @@
         el.advancedBuildArea.innerHTML = `<span class="empty">${t("advancedEmptyState")}</span>`;
         return;
       }
-      el.advancedBuildArea.innerHTML = builtAdvanced.map((token, index) => `<button class="built-token" data-index="${index}">${token}</button>`).join("");
+      el.advancedBuildArea.innerHTML = builtAdvanced.map((token, index) => renderTokenButton("built-token", token, `data-index="${index}"`)).join("");
       el.advancedBuildArea.querySelectorAll(".built-token").forEach((button) => {
         button.addEventListener("click", () => removeAdvancedToken(Number(button.dataset.index)));
       });
@@ -1615,6 +1688,31 @@
     function composedAttempt(tokens) {
       const ordered = state.studyLanguage === "mandarin" ? [...tokens].reverse() : tokens;
       return ordered.join(" ").replace(/\s+/g, " ").trim();
+    }
+
+    function renderTokenButton(buttonClass, token, extraAttributes = "") {
+      const safeToken = escapeHtml(token);
+      const pinyin = getMandarinPinyin(token);
+      const pinyinHtml = pinyin ? `<span class="token-note" lang="${escapeHtml(pinyinUiLang())}">${escapeHtml(pinyin)}</span>` : "";
+      const attrs = extraAttributes ? ` ${extraAttributes}` : "";
+      return `<button class="${buttonClass}" data-token="${safeToken}"${attrs}><span class="token-main">${safeToken}</span>${pinyinHtml}</button>`;
+    }
+
+    function getMandarinPinyin(token) {
+      if (state.studyLanguage !== "mandarin") {
+        return "";
+      }
+      return mandarinPinyin[token] || "";
+    }
+
+    function pinyinUiLang() {
+      const code = uiCode();
+      return {
+        en: "en-US",
+        es: "es-ES",
+        fr: "fr-FR",
+        ja: "ja-JP"
+      }[code] || "en-US";
     }
   </script>
 </body>
