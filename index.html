@@ -239,6 +239,16 @@
       border: 1px solid rgba(31, 26, 23, 0.08);
     }
 
+    .text-input {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(69, 50, 33, 0.18);
+      padding: 12px 14px;
+      background: rgba(255, 253, 249, 0.98);
+      color: var(--ink);
+      font: inherit;
+    }
+
     .answer-grid, .token-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -335,6 +345,7 @@
           <button class="tab" data-tab="flashcards" data-i18n="tabFlashcards">Flashcards</button>
           <button class="tab" data-tab="quiz" data-i18n="tabQuiz">Quiz</button>
           <button class="tab" data-tab="phrases" data-i18n="tabPhrases">Phrase Lab</button>
+          <button class="tab" data-tab="advanced" data-i18n="tabAdvanced">Advanced</button>
         </div>
 
         <div class="tab-panel active" id="tab-overview">
@@ -423,6 +434,29 @@
             </div>
           </article>
         </div>
+
+        <div class="tab-panel" id="tab-advanced">
+          <article class="challenge-card">
+            <div class="module-head">
+              <div>
+                <div class="eyebrow" data-i18n="advancedLab">Advanced learning</div>
+                <strong data-i18n="advancedTitle">Complete the sentence</strong>
+              </div>
+            </div>
+            <div class="prompt-box">
+              <div class="eyebrow" data-i18n="advancedPromptLabel">Instruction</div>
+              <h3 id="advanced-source" style="margin-top: 8px;"></h3>
+            </div>
+            <div class="build-area" id="advanced-build-area"><span class="empty" data-i18n="advancedEmptyState">Build the full sentence without hints.</span></div>
+            <div class="token-grid" id="advanced-token-grid"></div>
+            <div class="feedback" id="advanced-feedback"></div>
+            <div class="action-row" style="justify-content: flex-start;">
+              <button class="primary" id="check-advanced-button" data-i18n="checkAdvanced">Check answer</button>
+              <button class="secondary" id="clear-advanced-button" data-i18n="clearAdvanced">Clear</button>
+              <button class="warm" id="next-advanced-button" data-i18n="nextAdvanced">Next challenge</button>
+            </div>
+          </article>
+        </div>
       </section>
 
       <aside class="panel">
@@ -485,7 +519,25 @@
           { term: "tomorrow", translation: "next day", category: "Time", note: "Future reference" },
           { term: "because", translation: "gives a reason", category: "Connector", note: "Links ideas" },
           { term: "before", translation: "earlier than", category: "Connector", note: "Sequence word" },
-          { term: "between", translation: "in the middle of two things", category: "Preposition", note: "Location and relation" }
+          { term: "between", translation: "in the middle of two things", category: "Preposition", note: "Location and relation" },
+          { term: "hospital", translation: "medical treatment center", category: "Places", note: "Important emergency word" },
+          { term: "pharmacy", translation: "place to buy medicine", category: "Places", note: "Health and travel use" },
+          { term: "airport", translation: "place where planes arrive and depart", category: "Travel", note: "Global travel noun" },
+          { term: "office", translation: "workplace building or room", category: "Work", note: "Common job context" },
+          { term: "meeting", translation: "planned work conversation", category: "Work", note: "High-frequency business word" },
+          { term: "laptop", translation: "portable computer", category: "Objects", note: "Digital life essential" },
+          { term: "notebook", translation: "book for writing notes", category: "Objects", note: "Study and work item" },
+          { term: "question", translation: "sentence asking for information", category: "Communication", note: "Useful in class and travel" },
+          { term: "answer", translation: "response to a question", category: "Communication", note: "Conversation skill word" },
+          { term: "usually", translation: "most of the time", category: "Frequency", note: "Routine adverb" },
+          { term: "often", translation: "many times", category: "Frequency", note: "Useful for habits" },
+          { term: "never", translation: "not at any time", category: "Frequency", note: "Strong frequency adverb" },
+          { term: "yesterday", translation: "the day before today", category: "Time", note: "Past reference" },
+          { term: "next week", translation: "the week after this one", category: "Time", note: "Planning phrase" },
+          { term: "near", translation: "close to", category: "Preposition", note: "Location word" },
+          { term: "far", translation: "at a long distance", category: "Preposition", note: "Distance word" },
+          { term: "through", translation: "from one side to the other", category: "Preposition", note: "Movement connector" },
+          { term: "around", translation: "on all sides or nearby", category: "Preposition", note: "Direction and place" }
         ],
         phrases: [
           { source: "Greet someone and introduce yourself", target: "Hello, I am Maya", tiles: ["Hello,", "I", "am", "Maya", "ticket", "today"] },
@@ -495,7 +547,15 @@
           { source: "Say your family arrives tomorrow", target: "My family comes tomorrow", tiles: ["My", "family", "comes", "tomorrow", "phone", "please"] },
           { source: "Explain that you study because you want freedom", target: "I learn because I want freedom", tiles: ["I", "learn", "because", "I", "want", "freedom", "ticket"] },
           { source: "Say the phone is on the table", target: "The phone is on the table", tiles: ["The", "phone", "is", "on", "the", "table", "water"] },
-          { source: "Tell someone to turn left before the station", target: "Turn left before the station", tiles: ["Turn", "left", "before", "the", "station", "teacher"] }
+          { source: "Tell someone to turn left before the station", target: "Turn left before the station", tiles: ["Turn", "left", "before", "the", "station", "teacher"] },
+          { source: "Say that you usually work at the office", target: "I usually work at the office", tiles: ["I", "usually", "work", "at", "the", "office", "family", "water"] },
+          { source: "Say you are meeting at the airport tomorrow", target: "We are meeting at the airport tomorrow", tiles: ["We", "are", "meeting", "at", "the", "airport", "tomorrow", "book", "left"] },
+          { source: "Say that the pharmacy is near the hospital", target: "The pharmacy is near the hospital", tiles: ["The", "pharmacy", "is", "near", "the", "hospital", "ticket", "friend"] },
+          { source: "Say you need your laptop and notebook today", target: "I need my laptop and notebook today", tiles: ["I", "need", "my", "laptop", "and", "notebook", "today", "because", "station"] },
+          { source: "Ask someone to answer your question politely", target: "Please answer my question", tiles: ["Please", "answer", "my", "question", "tomorrow", "street"] },
+          { source: "Say you walk through the street and around the station", target: "We walk through the street and around the station", tiles: ["We", "walk", "through", "the", "street", "and", "around", "the", "station", "water"] },
+          { source: "Say your friend never misses breakfast", target: "My friend never misses breakfast", tiles: ["My", "friend", "never", "misses", "breakfast", "phone", "before"] },
+          { source: "Say you can learn more next week", target: "I can learn more next week", tiles: ["I", "can", "learn", "more", "next", "week", "ticket", "today"] }
         ],
         lessons: [
           { title: "Unit 1 · Greetings and identity", detail: "Meet people, say your name, ask simple personal questions, and respond politely.", badge: "Social" },
@@ -537,7 +597,25 @@
           { term: "necesitar", translation: "to need", category: "Verb", note: "Essential request verb" },
           { term: "hoy", translation: "today", category: "Time", note: "Present-day reference" },
           { term: "mañana", translation: "tomorrow", category: "Time", note: "Future-day reference" },
-          { term: "porque", translation: "because", category: "Connector", note: "Reason connector" }
+          { term: "porque", translation: "because", category: "Connector", note: "Reason connector" },
+          { term: "hospital", translation: "hospital", category: "Places", note: "Essential health noun" },
+          { term: "farmacia", translation: "pharmacy", category: "Places", note: "Medicine and care context" },
+          { term: "aeropuerto", translation: "airport", category: "Travel", note: "International travel noun" },
+          { term: "oficina", translation: "office", category: "Work", note: "Professional setting noun" },
+          { term: "reunión", translation: "meeting", category: "Work", note: "Common work event" },
+          { term: "computadora", translation: "computer", category: "Objects", note: "Digital life essential" },
+          { term: "cuaderno", translation: "notebook", category: "Objects", note: "Study object" },
+          { term: "pregunta", translation: "question", category: "Communication", note: "Useful for class and travel" },
+          { term: "respuesta", translation: "answer", category: "Communication", note: "Conversation response noun" },
+          { term: "normalmente", translation: "usually", category: "Frequency", note: "Routine adverb" },
+          { term: "a menudo", translation: "often", category: "Frequency", note: "Habit adverb" },
+          { term: "nunca", translation: "never", category: "Frequency", note: "Negative frequency adverb" },
+          { term: "ayer", translation: "yesterday", category: "Time", note: "Past-day reference" },
+          { term: "la próxima semana", translation: "next week", category: "Time", note: "Planning phrase" },
+          { term: "cerca", translation: "near", category: "Preposition", note: "Location relation" },
+          { term: "lejos", translation: "far", category: "Preposition", note: "Distance relation" },
+          { term: "a través de", translation: "through", category: "Preposition", note: "Movement connector" },
+          { term: "alrededor", translation: "around", category: "Preposition", note: "Spatial relation" }
         ],
         phrases: [
           { source: "Greet someone and introduce yourself", target: "Hola, soy Maya", tiles: ["Hola,", "soy", "Maya", "boleto", "hoy"] },
@@ -547,7 +625,15 @@
           { source: "Say your family arrives tomorrow", target: "Mi familia llega mañana", tiles: ["Mi", "familia", "llega", "mañana", "teléfono", "hola"] },
           { source: "Explain that you learn because you want freedom", target: "Aprendo porque quiero libertad", tiles: ["Aprendo", "porque", "quiero", "libertad", "agua", "profesor"] },
           { source: "Tell someone to turn left before the station", target: "Gira a la izquierda antes de la estación", tiles: ["Gira", "a", "la", "izquierda", "antes", "de", "la", "estación", "pan"] },
-          { source: "Say you need a ticket today", target: "Necesito un boleto hoy", tiles: ["Necesito", "un", "boleto", "hoy", "familia", "gracias"] }
+          { source: "Say you need a ticket today", target: "Necesito un boleto hoy", tiles: ["Necesito", "un", "boleto", "hoy", "familia", "gracias"] },
+          { source: "Say that you usually work at the office", target: "Normalmente trabajo en la oficina", tiles: ["Normalmente", "trabajo", "en", "la", "oficina", "agua", "mañana"] },
+          { source: "Say you are meeting at the airport tomorrow", target: "Nos reunimos en el aeropuerto mañana", tiles: ["Nos", "reunimos", "en", "el", "aeropuerto", "mañana", "pan", "profesor"] },
+          { source: "Say that the pharmacy is near the hospital", target: "La farmacia está cerca del hospital", tiles: ["La", "farmacia", "está", "cerca", "del", "hospital", "boleto", "hoy"] },
+          { source: "Say you need your computer and notebook today", target: "Necesito mi computadora y cuaderno hoy", tiles: ["Necesito", "mi", "computadora", "y", "cuaderno", "hoy", "porque", "familia"] },
+          { source: "Ask someone to answer your question politely", target: "Por favor, responde mi pregunta", tiles: ["Por", "favor,", "responde", "mi", "pregunta", "calle", "gracias"] },
+          { source: "Say you walk through the street and around the station", target: "Caminamos por la calle y alrededor de la estación", tiles: ["Caminamos", "por", "la", "calle", "y", "alrededor", "de", "la", "estación", "agua"] },
+          { source: "Say your friend never misses breakfast", target: "Mi amigo nunca pierde el desayuno", tiles: ["Mi", "amigo", "nunca", "pierde", "el", "desayuno", "izquierda", "hoy"] },
+          { source: "Say you can learn more next week", target: "Puedo aprender más la próxima semana", tiles: ["Puedo", "aprender", "más", "la", "próxima", "semana", "teléfono", "mañana"] }
         ],
         lessons: [
           { title: "Unidad 1 · Saludos y presentaciones", detail: "Conoce gente, di tu nombre, pregunta lo básico y responde con cortesía.", badge: "Social" },
@@ -589,7 +675,25 @@
           { term: "今天", translation: "today", category: "Time", note: "Current day" },
           { term: "明天", translation: "tomorrow", category: "Time", note: "Next day" },
           { term: "因为", translation: "because", category: "Connector", note: "Reason connector" },
-          { term: "以前", translation: "before", category: "Connector", note: "Sequence and time" }
+          { term: "以前", translation: "before", category: "Connector", note: "Sequence and time" },
+          { term: "医院", translation: "hospital", category: "Places", note: "Essential health noun" },
+          { term: "药店", translation: "pharmacy", category: "Places", note: "Medicine location" },
+          { term: "机场", translation: "airport", category: "Travel", note: "Air travel noun" },
+          { term: "办公室", translation: "office", category: "Work", note: "Workplace noun" },
+          { term: "会议", translation: "meeting", category: "Work", note: "Common work event" },
+          { term: "电脑", translation: "computer", category: "Objects", note: "Digital life essential" },
+          { term: "笔记本", translation: "notebook", category: "Objects", note: "Study item" },
+          { term: "问题", translation: "question", category: "Communication", note: "Important learning noun" },
+          { term: "回答", translation: "answer", category: "Communication", note: "Response noun" },
+          { term: "通常", translation: "usually", category: "Frequency", note: "Routine adverb" },
+          { term: "经常", translation: "often", category: "Frequency", note: "Habit adverb" },
+          { term: "从不", translation: "never", category: "Frequency", note: "Negative frequency adverb" },
+          { term: "昨天", translation: "yesterday", category: "Time", note: "Past-day reference" },
+          { term: "下周", translation: "next week", category: "Time", note: "Planning phrase" },
+          { term: "附近", translation: "nearby", category: "Preposition", note: "Location relation" },
+          { term: "远", translation: "far", category: "Preposition", note: "Distance relation" },
+          { term: "穿过", translation: "through", category: "Preposition", note: "Movement connector" },
+          { term: "周围", translation: "around", category: "Preposition", note: "Spatial relation" }
         ],
         phrases: [
           { source: "Greet someone and introduce yourself", target: "你好，我叫 Maya", tiles: ["你好，", "我", "叫", "Maya", "票", "今天"] },
@@ -599,7 +703,15 @@
           { source: "Say your family arrives tomorrow", target: "我的家人明天来", tiles: ["我的", "家人", "明天", "来", "手机", "请"] },
           { source: "Explain that you study because you want freedom", target: "我学习，因为我想自由", tiles: ["我", "学习，", "因为", "我", "想", "自由", "票"] },
           { source: "Tell someone to turn left before the station", target: "车站以前往左边走", tiles: ["车站", "以前", "往", "左边", "走", "老师"] },
-          { source: "Say you need a ticket today", target: "我今天需要票", tiles: ["我", "今天", "需要", "票", "家人", "谢谢"] }
+          { source: "Say you need a ticket today", target: "我今天需要票", tiles: ["我", "今天", "需要", "票", "家人", "谢谢"] },
+          { source: "Say that you usually work at the office", target: "我通常在办公室工作", tiles: ["我", "通常", "在", "办公室", "工作", "朋友", "水"] },
+          { source: "Say you are meeting at the airport tomorrow", target: "我们明天在机场见面", tiles: ["我们", "明天", "在", "机场", "见面", "车站", "书"] },
+          { source: "Say that the pharmacy is near the hospital", target: "药店在医院附近", tiles: ["药店", "在", "医院", "附近", "今天", "老师"] },
+          { source: "Say you need your computer and notebook today", target: "我今天需要电脑和笔记本", tiles: ["我", "今天", "需要", "电脑", "和", "笔记本", "票", "家人"] },
+          { source: "Ask someone to answer your question politely", target: "请回答我的问题", tiles: ["请", "回答", "我的", "问题", "明天", "路"] },
+          { source: "Say you walk through the street and around the station", target: "我们穿过这条路再绕车站走", tiles: ["我们", "穿过", "这条路", "再", "绕", "车站", "走", "水", "老师"] },
+          { source: "Say your friend never misses breakfast", target: "我的朋友从不错过早饭", tiles: ["我的", "朋友", "从不", "错过", "早饭", "手机", "谢谢"] },
+          { source: "Say you can learn more next week", target: "我下周可以学得更多", tiles: ["我", "下周", "可以", "学得", "更多", "票", "今天"] }
         ],
         lessons: [
           { title: "Unit 1 · Greetings and identity", detail: "Learn to greet people, state your name, and open a simple interaction with confidence.", badge: "Social" },
@@ -640,6 +752,7 @@
         tabFlashcards: "Flashcards",
         tabQuiz: "Quiz",
         tabPhrases: "Phrase Lab",
+        tabAdvanced: "Advanced",
         currentTrack: "Current track",
         progressMap: "Progress map",
         percentCompleteSuffix: "% complete",
@@ -659,6 +772,13 @@
         checkPhrase: "Check phrase",
         clearPhrase: "Clear",
         nextPhrase: "Next phrase",
+        advancedLab: "Advanced learning",
+        advancedTitle: "Complete the sentence",
+        advancedPromptLabel: "Instruction",
+        advancedEmptyState: "Build the full sentence without hints.",
+        checkAdvanced: "Check answer",
+        clearAdvanced: "Clear",
+        nextAdvanced: "Next challenge",
         roadmapLabel: "Course roadmap",
         roadmapTitle: "The first release focuses on full core tracks",
         hostingLabel: "Hosting",
@@ -683,6 +803,9 @@
         phraseNeedBuild: "Build the phrase before checking it.",
         phraseCorrect: "Correct phrase. Move to the next one.",
         phraseIncorrect: "Close, but not correct. Target: {target}",
+        advancedNeedBuild: "Build the sentence before checking.",
+        advancedCorrect: "Excellent. That sentence is correct.",
+        advancedIncorrect: "Not quite. Try again.",
         speechUnavailable: "Speech synthesis is not available in this browser.",
         uiAuto: "Auto",
         uiLanguageNames: { en: "English", es: "Español", fr: "Français", ja: "日本語" },
@@ -713,6 +836,7 @@
         tabFlashcards: "Tarjetas",
         tabQuiz: "Quiz",
         tabPhrases: "Laboratorio de frases",
+        tabAdvanced: "Avanzado",
         currentTrack: "Ruta actual",
         progressMap: "Mapa de progreso",
         percentCompleteSuffix: "% completado",
@@ -732,6 +856,13 @@
         checkPhrase: "Comprobar frase",
         clearPhrase: "Limpiar",
         nextPhrase: "Siguiente frase",
+        advancedLab: "Aprendizaje avanzado",
+        advancedTitle: "Completa la oración",
+        advancedPromptLabel: "Instrucción",
+        advancedEmptyState: "Construye la oración completa sin pistas.",
+        checkAdvanced: "Comprobar respuesta",
+        clearAdvanced: "Limpiar",
+        nextAdvanced: "Siguiente reto",
         roadmapLabel: "Ruta del curso",
         roadmapTitle: "La primera versión se concentra en tres cursos centrales completos",
         hostingLabel: "Alojamiento",
@@ -756,6 +887,9 @@
         phraseNeedBuild: "Construye la frase antes de comprobarla.",
         phraseCorrect: "Frase correcta. Pasa a la siguiente.",
         phraseIncorrect: "Casi, pero no es correcta. Objetivo: {target}",
+        advancedNeedBuild: "Construye la oración antes de comprobar.",
+        advancedCorrect: "Excelente. Esa oración es correcta.",
+        advancedIncorrect: "Aún no. Inténtalo de nuevo.",
         speechUnavailable: "La síntesis de voz no está disponible en este navegador.",
         uiAuto: "Automático",
         uiLanguageNames: { en: "English", es: "Español", fr: "Français", ja: "日本語" },
@@ -786,6 +920,7 @@
         tabFlashcards: "Cartes",
         tabQuiz: "Quiz",
         tabPhrases: "Atelier de phrases",
+        tabAdvanced: "Avancé",
         currentTrack: "Parcours actuel",
         progressMap: "Carte de progression",
         percentCompleteSuffix: "% terminé",
@@ -805,6 +940,13 @@
         checkPhrase: "Vérifier la phrase",
         clearPhrase: "Effacer",
         nextPhrase: "Phrase suivante",
+        advancedLab: "Apprentissage avancé",
+        advancedTitle: "Complétez la phrase",
+        advancedPromptLabel: "Consigne",
+        advancedEmptyState: "Construisez la phrase complète sans indice.",
+        checkAdvanced: "Vérifier la réponse",
+        clearAdvanced: "Effacer",
+        nextAdvanced: "Défi suivant",
         roadmapLabel: "Parcours du cours",
         roadmapTitle: "La première version se concentre sur trois parcours complets",
         hostingLabel: "Hébergement",
@@ -829,6 +971,9 @@
         phraseNeedBuild: "Construisez la phrase avant de la vérifier.",
         phraseCorrect: "Phrase correcte. Passez à la suivante.",
         phraseIncorrect: "Presque, mais ce n'est pas correct. Cible : {target}",
+        advancedNeedBuild: "Construisez la phrase avant de vérifier.",
+        advancedCorrect: "Excellent. Cette phrase est correcte.",
+        advancedIncorrect: "Pas encore. Réessayez.",
         speechUnavailable: "La synthèse vocale n'est pas disponible dans ce navigateur.",
         uiAuto: "Auto",
         uiLanguageNames: { en: "English", es: "Español", fr: "Français", ja: "日本語" },
@@ -859,6 +1004,7 @@
         tabFlashcards: "フラッシュカード",
         tabQuiz: "クイズ",
         tabPhrases: "フレーズラボ",
+        tabAdvanced: "上級",
         currentTrack: "現在のトラック",
         progressMap: "進捗マップ",
         percentCompleteSuffix: "% 完了",
@@ -878,6 +1024,13 @@
         checkPhrase: "フレーズを確認",
         clearPhrase: "クリア",
         nextPhrase: "次のフレーズ",
+        advancedLab: "上級学習",
+        advancedTitle: "文を完成させる",
+        advancedPromptLabel: "指示",
+        advancedEmptyState: "ヒントなしで文全体を組み立ててください。",
+        checkAdvanced: "回答を確認",
+        clearAdvanced: "クリア",
+        nextAdvanced: "次の課題",
         roadmapLabel: "コース構成",
         roadmapTitle: "初回リリースは 3 つの中核コースに集中しています",
         hostingLabel: "ホスティング",
@@ -902,6 +1055,9 @@
         phraseNeedBuild: "確認する前にフレーズを組み立ててください。",
         phraseCorrect: "正しいフレーズです。次へ進みましょう。",
         phraseIncorrect: "惜しいですが不正解です。正解: {target}",
+        advancedNeedBuild: "確認する前に文を組み立ててください。",
+        advancedCorrect: "素晴らしいです。その文は正解です。",
+        advancedIncorrect: "もう少しです。もう一度試してください。",
         speechUnavailable: "このブラウザでは音声合成を利用できません。",
         uiAuto: "自動",
         uiLanguageNames: { en: "English", es: "Español", fr: "Français", ja: "日本語" },
@@ -927,7 +1083,9 @@
     const state = loadState();
     let currentQuiz = null;
     let currentPhrase = null;
+    let currentAdvanced = null;
     let builtPhrase = [];
+    let builtAdvanced = [];
     let quizLocked = false;
 
     const el = {
@@ -959,7 +1117,11 @@
       phraseHint: document.getElementById("phrase-hint"),
       buildArea: document.getElementById("build-area"),
       tokenGrid: document.getElementById("token-grid"),
-      phraseFeedback: document.getElementById("phrase-feedback")
+      phraseFeedback: document.getElementById("phrase-feedback"),
+      advancedSource: document.getElementById("advanced-source"),
+      advancedBuildArea: document.getElementById("advanced-build-area"),
+      advancedTokenGrid: document.getElementById("advanced-token-grid"),
+      advancedFeedback: document.getElementById("advanced-feedback")
     };
 
     document.querySelectorAll(".tab").forEach((button) => {
@@ -988,6 +1150,9 @@
     document.getElementById("check-phrase-button").addEventListener("click", checkPhrase);
     document.getElementById("clear-phrase-button").addEventListener("click", clearPhrase);
     document.getElementById("next-phrase-button").addEventListener("click", generatePhrase);
+    document.getElementById("check-advanced-button").addEventListener("click", checkAdvanced);
+    document.getElementById("clear-advanced-button").addEventListener("click", clearAdvanced);
+    document.getElementById("next-advanced-button").addEventListener("click", generateAdvanced);
 
     el.studyLanguage.addEventListener("change", (event) => {
       state.studyLanguage = event.target.value;
@@ -995,8 +1160,10 @@
       state.reveal = false;
       state.quizRound = 1;
       builtPhrase = [];
+      builtAdvanced = [];
       generateQuiz();
       generatePhrase();
+      generateAdvanced();
       saveAndRender();
     });
 
@@ -1019,6 +1186,7 @@
       populateSelectors();
       generateQuiz();
       generatePhrase();
+      generateAdvanced();
       render();
     }
 
@@ -1100,6 +1268,9 @@
       document.querySelectorAll("[data-i18n]").forEach((node) => {
         node.textContent = t(node.dataset.i18n);
       });
+      document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => {
+        node.setAttribute("placeholder", t(node.dataset.i18nPlaceholder));
+      });
       populateSelectors();
     }
 
@@ -1148,6 +1319,7 @@
 
       el.quizRound.textContent = t("roundLabel", { round: state.quizRound });
       renderPhraseBuild();
+      renderAdvancedBuild();
     }
 
     function markKnown() {
@@ -1272,6 +1444,68 @@
       el.phraseFeedback.textContent = t("phraseIncorrect", { target: currentPhrase.target });
     }
 
+    function generateAdvanced() {
+      currentAdvanced = pack().phrases[randomIndex(pack().phrases.length)];
+      builtAdvanced = [];
+      el.advancedSource.textContent = currentAdvanced.source;
+      el.advancedFeedback.textContent = "";
+      el.advancedTokenGrid.innerHTML = shuffle([...currentAdvanced.tiles]).map((tile) => `<button class="token" data-token="${escapeHtml(tile)}">${tile}</button>`).join("");
+      el.advancedTokenGrid.querySelectorAll(".token").forEach((button) => {
+        button.addEventListener("click", () => {
+          builtAdvanced.push(button.dataset.token);
+          button.disabled = true;
+          renderAdvancedBuild();
+        });
+      });
+      render();
+    }
+
+    function renderAdvancedBuild() {
+      if (!builtAdvanced.length) {
+        el.advancedBuildArea.innerHTML = `<span class="empty">${t("advancedEmptyState")}</span>`;
+        return;
+      }
+      el.advancedBuildArea.innerHTML = builtAdvanced.map((token, index) => `<button class="built-token" data-index="${index}">${token}</button>`).join("");
+      el.advancedBuildArea.querySelectorAll(".built-token").forEach((button) => {
+        button.addEventListener("click", () => removeAdvancedToken(Number(button.dataset.index)));
+      });
+    }
+
+    function removeAdvancedToken(index) {
+      const removed = builtAdvanced.splice(index, 1)[0];
+      const original = Array.from(el.advancedTokenGrid.querySelectorAll(".token")).find((button) => button.dataset.token === removed && button.disabled);
+      if (original) {
+        original.disabled = false;
+      }
+      renderAdvancedBuild();
+    }
+
+    function clearAdvanced() {
+      builtAdvanced = [];
+      el.advancedTokenGrid.querySelectorAll(".token").forEach((button) => { button.disabled = false; });
+      el.advancedFeedback.textContent = "";
+      renderAdvancedBuild();
+    }
+
+    function checkAdvanced() {
+      if (!currentAdvanced) {
+        return;
+      }
+      const attempt = builtAdvanced.join(" ").replace(/\s+/g, " ").trim();
+      const target = currentAdvanced.target.replace(/\s+/g, " ").trim();
+      if (!attempt) {
+        el.advancedFeedback.textContent = t("advancedNeedBuild");
+        return;
+      }
+      if (attempt === target) {
+        el.advancedFeedback.textContent = t("advancedCorrect");
+        state.phraseWins += 1;
+        saveAndRender();
+        return;
+      }
+      el.advancedFeedback.textContent = t("advancedIncorrect");
+    }
+
     function speakCurrentCard() {
       if (!("speechSynthesis" in window)) {
         alert(t("speechUnavailable"));
@@ -1292,6 +1526,7 @@
       registerSession();
       generateQuiz();
       generatePhrase();
+      generateAdvanced();
       saveAndRender();
     }
 
