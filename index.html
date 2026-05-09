@@ -272,6 +272,12 @@
       text-align: right;
     }
 
+    .rtl-build .token,
+    .rtl-build .built-token {
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
     .build-area {
       min-height: 76px;
       display: flex;
@@ -1447,7 +1453,11 @@
         el.phraseFeedback.textContent = t("phraseNeedBuild");
         return;
       }
-      if (canonicalSentence(built) === canonicalSentence(currentPhrase.target)) {
+      const preservePunctuation = state.studyLanguage === "mandarin";
+      if (
+        canonicalSentence(built, { preservePunctuation })
+        === canonicalSentence(currentPhrase.target, { preservePunctuation })
+      ) {
         state.phraseWins += 1;
         el.phraseFeedback.textContent = t("phraseCorrect");
         saveAndRender();
@@ -1518,7 +1528,11 @@
         el.advancedFeedback.textContent = t("advancedNeedBuild");
         return;
       }
-      if (canonicalSentence(attempt) === canonicalSentence(currentAdvanced.target)) {
+      const preservePunctuation = state.studyLanguage === "mandarin";
+      if (
+        canonicalSentence(attempt, { preservePunctuation })
+        === canonicalSentence(currentAdvanced.target, { preservePunctuation })
+      ) {
         el.advancedFeedback.textContent = t("advancedCorrect");
         state.phraseWins += 1;
         saveAndRender();
@@ -1587,12 +1601,15 @@
         .replace(/"/g, "&quot;");
     }
 
-    function canonicalSentence(value) {
-      return String(value)
+    function canonicalSentence(value, options = {}) {
+      const preservePunctuation = Boolean(options.preservePunctuation);
+      let normalized = String(value)
         .toLowerCase()
-        .replace(/[\u2019']/g, "")
-        .replace(/[.,!?;:\"()\[\]{}¿¡，。！？、]/g, "")
-        .replace(/\s+/g, "");
+        .replace(/[\u2019']/g, "");
+      if (!preservePunctuation) {
+        normalized = normalized.replace(/[.,!?;:\"()\[\]{}¿¡，。！？、]/g, "");
+      }
+      return normalized.replace(/\s+/g, "");
     }
 
     function composedAttempt(tokens) {
