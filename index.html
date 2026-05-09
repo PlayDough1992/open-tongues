@@ -267,6 +267,11 @@
     .answer.correct { background: rgba(47, 125, 50, 0.14); border-color: rgba(47, 125, 50, 0.35); }
     .answer.wrong { background: rgba(181, 56, 47, 0.14); border-color: rgba(181, 56, 47, 0.35); }
 
+    .rtl-build {
+      direction: rtl;
+      text-align: right;
+    }
+
     .build-area {
       min-height: 76px;
       display: flex;
@@ -1318,8 +1323,16 @@
         .join("");
 
       el.quizRound.textContent = t("roundLabel", { round: state.quizRound });
+      updateBuildDirection();
       renderPhraseBuild();
       renderAdvancedBuild();
+    }
+
+    function updateBuildDirection() {
+      const useRtlBuild = state.studyLanguage === "mandarin";
+      [el.buildArea, el.tokenGrid, el.advancedBuildArea, el.advancedTokenGrid].forEach((node) => {
+        node.classList.toggle("rtl-build", useRtlBuild);
+      });
     }
 
     function markKnown() {
@@ -1429,13 +1442,12 @@
     }
 
     function checkPhrase() {
-      const built = builtPhrase.join(" ").replace(/\s+/g, " ").trim();
-      const target = currentPhrase.target.replace(/\s+/g, " ").trim();
+      const built = composedAttempt(builtPhrase);
       if (!built) {
         el.phraseFeedback.textContent = t("phraseNeedBuild");
         return;
       }
-      if (built === target) {
+      if (canonicalSentence(built) === canonicalSentence(currentPhrase.target)) {
         state.phraseWins += 1;
         el.phraseFeedback.textContent = t("phraseCorrect");
         saveAndRender();
@@ -1445,7 +1457,17 @@
     }
 
     function generateAdvanced() {
-      currentAdvanced = pack().phrases[randomIndex(pack().phrases.length)];
+      const advancedPool = pack().phrases || [];
+      if (!advancedPool.length) {
+        currentAdvanced = null;
+        el.advancedSource.textContent = "";
+        el.advancedTokenGrid.innerHTML = "";
+        builtAdvanced = [];
+        el.advancedFeedback.textContent = t("advancedNeedBuild");
+        render();
+        return;
+      }
+      currentAdvanced = advancedPool[randomIndex(advancedPool.length)];
       builtAdvanced = [];
       el.advancedSource.textContent = currentAdvanced.source;
       el.advancedFeedback.textContent = "";
@@ -1491,13 +1513,12 @@
       if (!currentAdvanced) {
         return;
       }
-      const attempt = builtAdvanced.join(" ").replace(/\s+/g, " ").trim();
-      const target = currentAdvanced.target.replace(/\s+/g, " ").trim();
+      const attempt = composedAttempt(builtAdvanced);
       if (!attempt) {
         el.advancedFeedback.textContent = t("advancedNeedBuild");
         return;
       }
-      if (attempt === target) {
+      if (canonicalSentence(attempt) === canonicalSentence(currentAdvanced.target)) {
         el.advancedFeedback.textContent = t("advancedCorrect");
         state.phraseWins += 1;
         saveAndRender();
@@ -1564,6 +1585,19 @@
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;");
+    }
+
+    function canonicalSentence(value) {
+      return String(value)
+        .toLowerCase()
+        .replace(/[\u2019']/g, "")
+        .replace(/[.,!?;:\"()\[\]{}¿¡，。！？、]/g, "")
+        .replace(/\s+/g, "");
+    }
+
+    function composedAttempt(tokens) {
+      const ordered = state.studyLanguage === "mandarin" ? [...tokens].reverse() : tokens;
+      return ordered.join(" ").replace(/\s+/g, " ").trim();
     }
   </script>
 </body>
