@@ -1,0 +1,1335 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Open Tongues</title>
+  <style>
+    :root {
+      --bg: #f6efe3;
+      --panel: rgba(255, 251, 244, 0.84);
+      --panel-strong: rgba(255, 249, 240, 0.96);
+      --ink: #211a16;
+      --muted: #66584e;
+      --line: rgba(65, 46, 28, 0.14);
+      --accent: #0b8f79;
+      --accent-2: #e0623b;
+      --accent-3: #efb545;
+      --shadow: 0 26px 60px rgba(65, 45, 28, 0.16);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at top left, rgba(239, 181, 69, 0.34), transparent 30%),
+        radial-gradient(circle at 82% 14%, rgba(11, 143, 121, 0.2), transparent 28%),
+        linear-gradient(180deg, #fff8ed 0%, #f4ebde 45%, #efe4d4 100%);
+      color: var(--ink);
+    }
+
+    body { padding: 22px; }
+    button, select { font: inherit; }
+
+    .app {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+    }
+
+    .hero, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      border-radius: 34px;
+      padding: 28px;
+      display: grid;
+      gap: 20px;
+    }
+
+    .hero-top, .hero-controls, .button-row, .tab-row, .module-head, .action-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .badge, .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(31, 26, 23, 0.06);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      font-size: clamp(2.3rem, 5vw, 4.8rem);
+      line-height: 0.95;
+      max-width: 10ch;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-copy {
+      max-width: 68ch;
+      line-height: 1.6;
+      color: var(--muted);
+      font-size: 1.04rem;
+    }
+
+    .hero-controls {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .control {
+      display: grid;
+      gap: 8px;
+    }
+
+    label, .eyebrow {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.82rem;
+    }
+
+    select {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(69, 50, 33, 0.18);
+      padding: 12px 14px;
+      background: rgba(255, 253, 249, 0.98);
+      color: var(--ink);
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: transform 160ms ease, opacity 160ms ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .primary { background: linear-gradient(135deg, var(--accent), #0e6d78); color: #fff; }
+    .secondary { background: rgba(31, 26, 23, 0.08); color: var(--ink); }
+    .warm { background: linear-gradient(135deg, var(--accent-2), #c6452c); color: #fff; }
+    .gold { background: linear-gradient(135deg, var(--accent-3), #d99a1f); color: #291d08; }
+    .ghost { background: transparent; border: 1px solid rgba(31, 26, 23, 0.14); color: var(--ink); }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .stat {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(31, 26, 23, 0.05);
+      border: 1px solid rgba(31, 26, 23, 0.08);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+      gap: 20px;
+    }
+
+    .panel {
+      border-radius: 30px;
+      padding: 22px;
+    }
+
+    .tab {
+      background: rgba(31, 26, 23, 0.06);
+      color: var(--ink);
+    }
+
+    .tab.active { background: var(--ink); color: #fff; }
+
+    .tab-panel { display: none; margin-top: 18px; }
+    .tab-panel.active { display: block; }
+
+    .grid-2, .lesson-grid, .sidebar-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .module, .lesson-card, .note-card, .challenge-card, .flashcard {
+      border-radius: 24px;
+      padding: 18px;
+      background: var(--panel-strong);
+      border: 1px solid rgba(79, 55, 35, 0.11);
+    }
+
+    .module, .challenge-card { display: grid; gap: 14px; }
+
+    .footer-note, .detail {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.97rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(31, 26, 23, 0.08);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent), var(--accent-3));
+      transition: width 180ms ease;
+    }
+
+    .flashcard {
+      min-height: 250px;
+      display: grid;
+      gap: 16px;
+      align-content: space-between;
+      background:
+        linear-gradient(160deg, rgba(11, 143, 121, 0.08), rgba(239, 181, 69, 0.18)),
+        rgba(255, 250, 244, 0.97);
+    }
+
+    .term {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      letter-spacing: -0.04em;
+    }
+
+    .translation {
+      color: var(--muted);
+      font-size: 1.18rem;
+    }
+
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .prompt-box, .build-area {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(31, 26, 23, 0.04);
+      border: 1px solid rgba(31, 26, 23, 0.08);
+    }
+
+    .answer-grid, .token-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .answer, .token, .built-token {
+      text-align: left;
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(31, 26, 23, 0.1);
+    }
+
+    .token, .built-token { text-align: center; }
+    .answer.correct { background: rgba(47, 125, 50, 0.14); border-color: rgba(47, 125, 50, 0.35); }
+    .answer.wrong { background: rgba(181, 56, 47, 0.14); border-color: rgba(181, 56, 47, 0.35); }
+
+    .build-area {
+      min-height: 76px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      background: rgba(255, 252, 247, 0.9);
+    }
+
+    .empty { color: var(--muted); font-style: italic; }
+    .feedback { min-height: 24px; color: var(--muted); }
+
+    @media (max-width: 980px) {
+      body { padding: 16px; }
+      .hero-controls, .stats, .main, .grid-2, .lesson-grid, .sidebar-grid, .answer-grid, .token-grid {
+        grid-template-columns: 1fr;
+      }
+      h1 { max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <div class="badge" data-i18n="heroBadge">Open Tongues · learn without subscriptions</div>
+          <h1 data-i18n="heroTitle">Language learning that stays free.</h1>
+        </div>
+        <div class="badge" data-i18n="heroHostBadge">Single file · GitHub Pages ready</div>
+      </div>
+      <p class="hero-copy" data-i18n="heroCopy">Train vocabulary, phrase building, comprehension, and speaking prompts in one offline-friendly page. Everything lives in this file, progress stays in your browser, and the content can be expanded without adding infrastructure.</p>
+
+      <div class="hero-controls">
+        <div class="control">
+          <label for="study-language" data-i18n="studyLanguageLabel">Study language</label>
+          <select id="study-language"></select>
+        </div>
+        <div class="control">
+          <label for="ui-language" data-i18n="uiLanguageLabel">Interface language</label>
+          <select id="ui-language"></select>
+        </div>
+        <div class="control">
+          <label for="difficulty" data-i18n="intensityLabel">Intensity</label>
+          <select id="difficulty"></select>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <div class="button-row">
+          <button class="primary" id="shuffle-button" data-i18n="shuffleDeck">Shuffle deck</button>
+          <button class="secondary" id="speak-button" data-i18n="speakCurrentCard">Speak current card</button>
+          <button class="ghost" id="reset-button" data-i18n="resetProgress">Reset progress</button>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><strong id="stat-mastered">0</strong><span data-i18n="masteredCards">Mastered cards</span></div>
+        <div class="stat"><strong id="stat-quiz">0%</strong><span data-i18n="quizAccuracy">Quiz accuracy</span></div>
+        <div class="stat"><strong id="stat-sessions">0</strong><span data-i18n="sessionsToday">Sessions today</span></div>
+        <div class="stat"><strong id="stat-phrases">0</strong><span data-i18n="phraseWins">Phrase wins</span></div>
+      </div>
+    </section>
+
+    <div class="main">
+      <section class="panel">
+        <div class="module-head">
+          <div>
+            <div class="eyebrow" data-i18n="coreStudio">Core studio</div>
+            <h2 data-i18n="coreStudioTitle">Train the language from several angles</h2>
+          </div>
+        </div>
+
+        <div class="tab-row">
+          <button class="tab active" data-tab="overview" data-i18n="tabOverview">Overview</button>
+          <button class="tab" data-tab="flashcards" data-i18n="tabFlashcards">Flashcards</button>
+          <button class="tab" data-tab="quiz" data-i18n="tabQuiz">Quiz</button>
+          <button class="tab" data-tab="phrases" data-i18n="tabPhrases">Phrase Lab</button>
+        </div>
+
+        <div class="tab-panel active" id="tab-overview">
+          <div class="grid-2">
+            <article class="module">
+              <div class="module-head">
+                <div>
+                  <div class="eyebrow" data-i18n="currentTrack">Current track</div>
+                  <strong id="course-title"></strong>
+                </div>
+                <span class="chip" id="course-region"></span>
+              </div>
+              <p class="footer-note" id="course-description"></p>
+              <div class="chips" id="course-focus"></div>
+            </article>
+            <article class="module">
+              <div class="module-head">
+                <div>
+                  <div class="eyebrow" data-i18n="progressMap">Progress map</div>
+                  <strong><span id="progress-value">0</span><span data-i18n="percentCompleteSuffix">% complete</span></strong>
+                </div>
+                <span class="chip" id="progress-caption"></span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+              <p class="footer-note" id="progress-text"></p>
+            </article>
+          </div>
+          <div class="lesson-grid" id="lesson-grid" style="margin-top: 16px;"></div>
+        </div>
+
+        <div class="tab-panel" id="tab-flashcards">
+          <article class="flashcard">
+            <div>
+              <div class="eyebrow" id="card-category"></div>
+              <div class="term" id="card-term"></div>
+              <div class="translation" id="card-translation"></div>
+            </div>
+            <div>
+              <div class="chips" id="card-notes"></div>
+              <div class="action-row" style="margin-top: 14px; justify-content: flex-start;">
+                <button class="secondary" id="flip-button" data-i18n="revealHide">Reveal / hide</button>
+                <button class="gold" id="known-button" data-i18n="knowThis">I know this</button>
+                <button class="warm" id="next-card-button" data-i18n="nextCard">Next card</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="tab-panel" id="tab-quiz">
+          <article class="challenge-card">
+            <div class="module-head">
+              <div>
+                <div class="eyebrow" data-i18n="comprehension">Comprehension</div>
+                <strong data-i18n="quizTitle">Choose the right meaning</strong>
+              </div>
+              <span class="chip" id="quiz-round"></span>
+            </div>
+            <div class="prompt-box">
+              <div class="eyebrow" data-i18n="prompt">Prompt</div>
+              <h3 id="quiz-prompt" style="margin-top: 8px;"></h3>
+            </div>
+            <div class="answer-grid" id="answer-grid"></div>
+            <div class="feedback" id="quiz-feedback"></div>
+            <div class="action-row" style="justify-content: flex-start;">
+              <button class="primary" id="next-quiz-button" data-i18n="nextQuestion">Next question</button>
+            </div>
+          </article>
+        </div>
+
+        <div class="tab-panel" id="tab-phrases">
+          <article class="challenge-card">
+            <div class="module-head">
+              <div>
+                <div class="eyebrow" data-i18n="phraseLab">Phrase lab</div>
+                <strong id="phrase-source"></strong>
+              </div>
+              <span class="chip" id="phrase-hint"></span>
+            </div>
+            <div class="build-area" id="build-area"><span class="empty" data-i18n="phraseEmptyState">Tap the word tiles to build the translation.</span></div>
+            <div class="token-grid" id="token-grid"></div>
+            <div class="feedback" id="phrase-feedback"></div>
+            <div class="action-row" style="justify-content: flex-start;">
+              <button class="primary" id="check-phrase-button" data-i18n="checkPhrase">Check phrase</button>
+              <button class="secondary" id="clear-phrase-button" data-i18n="clearPhrase">Clear</button>
+              <button class="warm" id="next-phrase-button" data-i18n="nextPhrase">Next phrase</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="eyebrow" data-i18n="roadmapLabel">Course roadmap</div>
+        <h2 data-i18n="roadmapTitle">The first release focuses on full core tracks</h2>
+        <div class="sidebar-grid" style="margin-top: 14px;">
+          <article class="note-card">
+            <div class="eyebrow" data-i18n="hostingLabel">Hosting</div>
+            <strong data-i18n="githubPagesCompatible">GitHub Pages compatible</strong>
+            <p class="detail" data-i18n="hostingText">This app is one HTML file. Push it to a repository and serve it without a build pipeline.</p>
+          </article>
+          <article class="note-card">
+            <div class="eyebrow" data-i18n="offlineLabel">Offline</div>
+            <strong data-i18n="localFirstProgress">Local-first progress</strong>
+            <p class="detail" data-i18n="offlineText">Study stats are stored in localStorage, so learners keep progress without signing in.</p>
+          </article>
+          <article class="note-card">
+            <div class="eyebrow" data-i18n="expandableLabel">Expandable</div>
+            <strong data-i18n="contentEmbedded">Content is embedded</strong>
+            <p class="detail" data-i18n="expandableText">Add more language packs by extending the inline dataset in the script block.</p>
+          </article>
+          <article class="note-card">
+            <div class="eyebrow" data-i18n="accessLabel">Access</div>
+            <strong data-i18n="noAccountWall">No account wall</strong>
+            <p class="detail" data-i18n="accessText">There are no subscriptions, accounts, or paid features baked into the app architecture.</p>
+          </article>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const languagePacks = {
+      english: {
+        title: "English Core Course",
+        region: "Global English",
+        description: "A full beginner-to-lower-intermediate path built around everyday speech, travel, work, and digital life.",
+        focus: ["Introductions", "Daily routines", "Travel", "Work", "Questions"],
+        cards: [
+          { term: "hello", translation: "a basic greeting", category: "Greeting", note: "Use at almost any time" },
+          { term: "please", translation: "polite request marker", category: "Courtesy", note: "Softens requests" },
+          { term: "thank you", translation: "expression of gratitude", category: "Courtesy", note: "Core politeness phrase" },
+          { term: "water", translation: "a drink", category: "Food", note: "Essential everyday noun" },
+          { term: "breakfast", translation: "morning meal", category: "Food", note: "Common schedule word" },
+          { term: "station", translation: "transport hub", category: "Travel", note: "Train or bus context" },
+          { term: "ticket", translation: "travel pass", category: "Travel", note: "Needed for transit" },
+          { term: "left", translation: "direction opposite right", category: "Directions", note: "Navigation term" },
+          { term: "right", translation: "direction opposite left", category: "Directions", note: "Navigation term" },
+          { term: "street", translation: "road in a town", category: "Places", note: "Useful for directions" },
+          { term: "book", translation: "printed reading object", category: "Objects", note: "Study noun" },
+          { term: "phone", translation: "mobile device", category: "Objects", note: "Modern essential" },
+          { term: "friend", translation: "person close to you", category: "People", note: "Core relationship noun" },
+          { term: "teacher", translation: "person who instructs", category: "People", note: "Classroom word" },
+          { term: "family", translation: "close relatives", category: "People", note: "Everyday conversation topic" },
+          { term: "learn", translation: "gain knowledge", category: "Verb", note: "Core study verb" },
+          { term: "work", translation: "do a job", category: "Verb", note: "Career context" },
+          { term: "need", translation: "require something", category: "Verb", note: "High-frequency function verb" },
+          { term: "want", translation: "desire something", category: "Verb", note: "Useful in requests" },
+          { term: "today", translation: "this day", category: "Time", note: "Time reference" },
+          { term: "tomorrow", translation: "next day", category: "Time", note: "Future reference" },
+          { term: "because", translation: "gives a reason", category: "Connector", note: "Links ideas" },
+          { term: "before", translation: "earlier than", category: "Connector", note: "Sequence word" },
+          { term: "between", translation: "in the middle of two things", category: "Preposition", note: "Location and relation" }
+        ],
+        phrases: [
+          { source: "Greet someone and introduce yourself", target: "Hello, I am Maya", tiles: ["Hello,", "I", "am", "Maya", "ticket", "today"] },
+          { source: "Ask for water politely", target: "Please, I need water", tiles: ["Please,", "I", "need", "water", "friend", "left"] },
+          { source: "Ask where the station is", target: "Where is the station?", tiles: ["Where", "is", "the", "station?", "book", "right"] },
+          { source: "Say you work with your teacher", target: "I work with my teacher", tiles: ["I", "work", "with", "my", "teacher", "tomorrow"] },
+          { source: "Say your family arrives tomorrow", target: "My family comes tomorrow", tiles: ["My", "family", "comes", "tomorrow", "phone", "please"] },
+          { source: "Explain that you study because you want freedom", target: "I learn because I want freedom", tiles: ["I", "learn", "because", "I", "want", "freedom", "ticket"] },
+          { source: "Say the phone is on the table", target: "The phone is on the table", tiles: ["The", "phone", "is", "on", "the", "table", "water"] },
+          { source: "Tell someone to turn left before the station", target: "Turn left before the station", tiles: ["Turn", "left", "before", "the", "station", "teacher"] }
+        ],
+        lessons: [
+          { title: "Unit 1 · Greetings and identity", detail: "Meet people, say your name, ask simple personal questions, and respond politely.", badge: "Social" },
+          { title: "Unit 2 · Family and close circles", detail: "Talk about friends, family, and the people around you with basic possession patterns.", badge: "People" },
+          { title: "Unit 3 · Food and daily needs", detail: "Order water, talk about meals, and make direct but polite requests.", badge: "Daily life" },
+          { title: "Unit 4 · Moving through a city", detail: "Use tickets, stations, turns, and street directions to survive in transit.", badge: "Travel" },
+          { title: "Unit 5 · Time and schedule", detail: "Use today, tomorrow, before, and after to arrange simple plans.", badge: "Time" },
+          { title: "Unit 6 · Study and work", detail: "Talk about learning, teachers, work, tools, and basic responsibilities.", badge: "Work" },
+          { title: "Unit 7 · Question building", detail: "Ask where, when, what, and why with clear beginner sentence frames.", badge: "Questions" },
+          { title: "Unit 8 · Connect ideas", detail: "Use because, but, and between to express reasons and relationships.", badge: "Grammar" }
+        ]
+      },
+      spanish: {
+        title: "Spanish Complete Course",
+        region: "Global Spanish",
+        description: "A broad entry course covering social language, movement, food, work, time, and common sentence patterns.",
+        focus: ["Greetings", "Daily actions", "Travel", "Food", "Work"],
+        cards: [
+          { term: "hola", translation: "hello", category: "Greeting", note: "Neutral everyday greeting" },
+          { term: "buenos días", translation: "good morning", category: "Greeting", note: "Morning greeting" },
+          { term: "gracias", translation: "thank you", category: "Courtesy", note: "Works almost everywhere" },
+          { term: "por favor", translation: "please", category: "Courtesy", note: "Softens requests" },
+          { term: "agua", translation: "water", category: "Food", note: "Essential survival word" },
+          { term: "pan", translation: "bread", category: "Food", note: "High-frequency food noun" },
+          { term: "desayuno", translation: "breakfast", category: "Food", note: "Morning meal" },
+          { term: "estación", translation: "station", category: "Travel", note: "Bus or train context" },
+          { term: "boleto", translation: "ticket", category: "Travel", note: "Travel access word" },
+          { term: "izquierda", translation: "left", category: "Directions", note: "Useful for navigation" },
+          { term: "derecha", translation: "right", category: "Directions", note: "Opposite direction" },
+          { term: "calle", translation: "street", category: "Places", note: "Useful in city movement" },
+          { term: "libro", translation: "book", category: "Objects", note: "Masculine noun" },
+          { term: "teléfono", translation: "phone", category: "Objects", note: "Modern everyday noun" },
+          { term: "amigo", translation: "friend", category: "People", note: "Masculine form" },
+          { term: "familia", translation: "family", category: "People", note: "Everyday conversation topic" },
+          { term: "profesor", translation: "teacher", category: "People", note: "Useful for class settings" },
+          { term: "aprender", translation: "to learn", category: "Verb", note: "Common study verb" },
+          { term: "trabajar", translation: "to work", category: "Verb", note: "Professional life verb" },
+          { term: "querer", translation: "to want", category: "Verb", note: "Core desire verb" },
+          { term: "necesitar", translation: "to need", category: "Verb", note: "Essential request verb" },
+          { term: "hoy", translation: "today", category: "Time", note: "Present-day reference" },
+          { term: "mañana", translation: "tomorrow", category: "Time", note: "Future-day reference" },
+          { term: "porque", translation: "because", category: "Connector", note: "Reason connector" }
+        ],
+        phrases: [
+          { source: "Greet someone and introduce yourself", target: "Hola, soy Maya", tiles: ["Hola,", "soy", "Maya", "boleto", "hoy"] },
+          { source: "Ask for water politely", target: "Por favor, necesito agua", tiles: ["Por", "favor,", "necesito", "agua", "amigo", "libro"] },
+          { source: "Ask where the station is", target: "¿Dónde está la estación?", tiles: ["¿Dónde", "está", "la", "estación?", "derecha", "gracias"] },
+          { source: "Say you work with your teacher", target: "Trabajo con mi profesor", tiles: ["Trabajo", "con", "mi", "profesor", "hoy", "pan"] },
+          { source: "Say your family arrives tomorrow", target: "Mi familia llega mañana", tiles: ["Mi", "familia", "llega", "mañana", "teléfono", "hola"] },
+          { source: "Explain that you learn because you want freedom", target: "Aprendo porque quiero libertad", tiles: ["Aprendo", "porque", "quiero", "libertad", "agua", "profesor"] },
+          { source: "Tell someone to turn left before the station", target: "Gira a la izquierda antes de la estación", tiles: ["Gira", "a", "la", "izquierda", "antes", "de", "la", "estación", "pan"] },
+          { source: "Say you need a ticket today", target: "Necesito un boleto hoy", tiles: ["Necesito", "un", "boleto", "hoy", "familia", "gracias"] }
+        ],
+        lessons: [
+          { title: "Unidad 1 · Saludos y presentaciones", detail: "Conoce gente, di tu nombre, pregunta lo básico y responde con cortesía.", badge: "Social" },
+          { title: "Unidad 2 · Familia y relaciones", detail: "Habla de amigos, familia y cercanía con posesión básica y descripciones cortas.", badge: "People" },
+          { title: "Unidad 3 · Comida y necesidades", detail: "Pide agua, comida y objetos con frases directas y útiles.", badge: "Daily life" },
+          { title: "Unidad 4 · Transporte y ciudad", detail: "Usa estación, boleto, calle e indicaciones para moverte con seguridad.", badge: "Travel" },
+          { title: "Unidad 5 · Tiempo y rutina", detail: "Habla de hoy, mañana, horarios y acciones regulares.", badge: "Time" },
+          { title: "Unidad 6 · Estudio y trabajo", detail: "Describe aprender, trabajar, enseñar y herramientas del día a día.", badge: "Work" },
+          { title: "Unidad 7 · Preguntas frecuentes", detail: "Construye preguntas con dónde, cuándo, qué y por qué.", badge: "Questions" },
+          { title: "Unidad 8 · Conectar ideas", detail: "Explica causas y secuencias con porque, antes y después.", badge: "Grammar" }
+        ]
+      },
+      mandarin: {
+        title: "Mandarin Chinese Complete Course",
+        region: "Modern Standard Chinese",
+        description: "A first-release Mandarin path covering greetings, movement, food, work, time, and beginner sentence patterns.",
+        focus: ["Greetings", "Daily needs", "Travel", "Work", "Time"],
+        cards: [
+          { term: "你好", translation: "hello", category: "Greeting", note: "Core standard greeting" },
+          { term: "谢谢", translation: "thank you", category: "Courtesy", note: "Everyday thanks" },
+          { term: "请", translation: "please", category: "Courtesy", note: "Polite request marker" },
+          { term: "水", translation: "water", category: "Food", note: "Very high-frequency noun" },
+          { term: "米饭", translation: "rice", category: "Food", note: "Staple food noun" },
+          { term: "早饭", translation: "breakfast", category: "Food", note: "Morning meal" },
+          { term: "车站", translation: "station", category: "Travel", note: "Travel location" },
+          { term: "票", translation: "ticket", category: "Travel", note: "Common transport noun" },
+          { term: "左边", translation: "left side", category: "Directions", note: "Navigation phrase" },
+          { term: "右边", translation: "right side", category: "Directions", note: "Navigation phrase" },
+          { term: "路", translation: "road", category: "Places", note: "Useful in directions" },
+          { term: "书", translation: "book", category: "Objects", note: "Basic study noun" },
+          { term: "手机", translation: "phone", category: "Objects", note: "Modern everyday noun" },
+          { term: "朋友", translation: "friend", category: "People", note: "Important social noun" },
+          { term: "家人", translation: "family", category: "People", note: "Family group noun" },
+          { term: "老师", translation: "teacher", category: "People", note: "High-frequency classroom noun" },
+          { term: "学习", translation: "to study", category: "Verb", note: "Core education verb" },
+          { term: "工作", translation: "to work", category: "Verb", note: "Daily life and career" },
+          { term: "想", translation: "to want", category: "Verb", note: "Desire and intention" },
+          { term: "需要", translation: "to need", category: "Verb", note: "Essential request verb" },
+          { term: "今天", translation: "today", category: "Time", note: "Current day" },
+          { term: "明天", translation: "tomorrow", category: "Time", note: "Next day" },
+          { term: "因为", translation: "because", category: "Connector", note: "Reason connector" },
+          { term: "以前", translation: "before", category: "Connector", note: "Sequence and time" }
+        ],
+        phrases: [
+          { source: "Greet someone and introduce yourself", target: "你好，我叫 Maya", tiles: ["你好，", "我", "叫", "Maya", "票", "今天"] },
+          { source: "Ask for water politely", target: "请给我水", tiles: ["请", "给", "我", "水", "朋友", "书"] },
+          { source: "Ask where the station is", target: "车站在哪里？", tiles: ["车站", "在", "哪里？", "谢谢", "右边"] },
+          { source: "Say you work with your teacher", target: "我和老师工作", tiles: ["我", "和", "老师", "工作", "明天", "路"] },
+          { source: "Say your family arrives tomorrow", target: "我的家人明天来", tiles: ["我的", "家人", "明天", "来", "手机", "请"] },
+          { source: "Explain that you study because you want freedom", target: "我学习，因为我想自由", tiles: ["我", "学习，", "因为", "我", "想", "自由", "票"] },
+          { source: "Tell someone to turn left before the station", target: "车站以前往左边走", tiles: ["车站", "以前", "往", "左边", "走", "老师"] },
+          { source: "Say you need a ticket today", target: "我今天需要票", tiles: ["我", "今天", "需要", "票", "家人", "谢谢"] }
+        ],
+        lessons: [
+          { title: "Unit 1 · Greetings and identity", detail: "Learn to greet people, state your name, and open a simple interaction with confidence.", badge: "Social" },
+          { title: "Unit 2 · Family and relationships", detail: "Talk about friends, family, and basic possession with short natural patterns.", badge: "People" },
+          { title: "Unit 3 · Food and everyday requests", detail: "Ask for water, meals, and common objects using polite beginner phrasing.", badge: "Daily life" },
+          { title: "Unit 4 · Travel and directions", detail: "Use station, ticket, road, left, and right to get around a city.", badge: "Travel" },
+          { title: "Unit 5 · Time and simple planning", detail: "Speak about today, tomorrow, and simple plans using time-first patterns.", badge: "Time" },
+          { title: "Unit 6 · Study and work", detail: "Describe learning, teachers, work, and simple classroom or job routines.", badge: "Work" },
+          { title: "Unit 7 · Core question patterns", detail: "Ask where, who, what, and why using high-frequency Mandarin frames.", badge: "Questions" },
+          { title: "Unit 8 · Build reasons and sequence", detail: "Use because and before-like connectors to link ideas clearly.", badge: "Grammar" }
+        ]
+      }
+    };
+
+    const uiTranslations = {
+      en: {
+        pageTitle: "Open Tongues",
+        heroBadge: "Open Tongues · learn without subscriptions",
+        heroTitle: "Language learning that stays free.",
+        heroHostBadge: "Single file · GitHub Pages ready",
+        heroCopy: "Train vocabulary, phrase building, comprehension, and speaking prompts in one offline-friendly page. Everything lives in this file, progress stays in your browser, and the content can be expanded without adding infrastructure.",
+        studyLanguageLabel: "Study language",
+        uiLanguageLabel: "Interface language",
+        intensityLabel: "Intensity",
+        difficultyGentle: "Gentle",
+        difficultyFocused: "Focused",
+        difficultyStretch: "Stretch",
+        shuffleDeck: "Shuffle deck",
+        speakCurrentCard: "Speak current card",
+        resetProgress: "Reset progress",
+        masteredCards: "Mastered cards",
+        quizAccuracy: "Quiz accuracy",
+        sessionsToday: "Sessions today",
+        phraseWins: "Phrase wins",
+        coreStudio: "Core studio",
+        coreStudioTitle: "Train the language from several angles",
+        tabOverview: "Overview",
+        tabFlashcards: "Flashcards",
+        tabQuiz: "Quiz",
+        tabPhrases: "Phrase Lab",
+        currentTrack: "Current track",
+        progressMap: "Progress map",
+        percentCompleteSuffix: "% complete",
+        progressStartingPoint: "Starting point",
+        progressBuildingMomentum: "Building momentum",
+        progressSolidFooting: "Solid footing",
+        progressText: "{known} of {total} current vocabulary cards marked as known.",
+        revealHide: "Reveal / hide",
+        knowThis: "I know this",
+        nextCard: "Next card",
+        comprehension: "Comprehension",
+        quizTitle: "Choose the right meaning",
+        prompt: "Prompt",
+        nextQuestion: "Next question",
+        phraseLab: "Phrase lab",
+        phraseEmptyState: "Tap the word tiles to build the translation.",
+        checkPhrase: "Check phrase",
+        clearPhrase: "Clear",
+        nextPhrase: "Next phrase",
+        roadmapLabel: "Course roadmap",
+        roadmapTitle: "The first release focuses on full core tracks",
+        hostingLabel: "Hosting",
+        githubPagesCompatible: "GitHub Pages compatible",
+        hostingText: "This app is one HTML file. Push it to a repository and serve it without a build pipeline.",
+        offlineLabel: "Offline",
+        localFirstProgress: "Local-first progress",
+        offlineText: "Study stats are stored in localStorage, so learners keep progress without signing in.",
+        expandableLabel: "Expandable",
+        contentEmbedded: "Content is embedded",
+        expandableText: "Add more language packs by extending the inline dataset in the script block.",
+        accessLabel: "Access",
+        noAccountWall: "No account wall",
+        accessText: "There are no subscriptions, accounts, or paid features baked into the app architecture.",
+        roundLabel: "Round {round}",
+        phraseHint: "Build: {target}",
+        cardHidden: "Tap reveal when you want the meaning.",
+        cardKnown: "Marked known",
+        cardUnknown: "Still in rotation",
+        quizCorrect: "Correct. Keep moving while the meaning is fresh.",
+        quizIncorrect: "Not this time. \"{prompt}\" means \"{answer}\".",
+        phraseNeedBuild: "Build the phrase before checking it.",
+        phraseCorrect: "Correct phrase. Move to the next one.",
+        phraseIncorrect: "Close, but not correct. Target: {target}",
+        speechUnavailable: "Speech synthesis is not available in this browser.",
+        uiAuto: "Auto",
+        uiLanguageNames: { en: "English", es: "Español", fr: "Français", ja: "日本語" },
+        studyLanguageNames: { english: "English", spanish: "Spanish", mandarin: "Mandarin Chinese" }
+      },
+      es: {
+        pageTitle: "Open Tongues",
+        heroBadge: "Open Tongues · aprende sin suscripciones",
+        heroTitle: "Aprender idiomas sin dejar de ser gratis.",
+        heroHostBadge: "Archivo único · listo para GitHub Pages",
+        heroCopy: "Practica vocabulario, construcción de frases, comprensión y pronunciación en una sola página compatible con uso sin conexión. Todo vive en este archivo, el progreso queda en tu navegador y el contenido puede crecer sin infraestructura extra.",
+        studyLanguageLabel: "Idioma de estudio",
+        uiLanguageLabel: "Idioma de la interfaz",
+        intensityLabel: "Intensidad",
+        difficultyGentle: "Suave",
+        difficultyFocused: "Concentrada",
+        difficultyStretch: "Exigente",
+        shuffleDeck: "Mezclar tarjetas",
+        speakCurrentCard: "Pronunciar tarjeta actual",
+        resetProgress: "Reiniciar progreso",
+        masteredCards: "Tarjetas dominadas",
+        quizAccuracy: "Precisión del quiz",
+        sessionsToday: "Sesiones hoy",
+        phraseWins: "Frases acertadas",
+        coreStudio: "Núcleo",
+        coreStudioTitle: "Entrena el idioma desde varios ángulos",
+        tabOverview: "Resumen",
+        tabFlashcards: "Tarjetas",
+        tabQuiz: "Quiz",
+        tabPhrases: "Laboratorio de frases",
+        currentTrack: "Ruta actual",
+        progressMap: "Mapa de progreso",
+        percentCompleteSuffix: "% completado",
+        progressStartingPoint: "Punto de partida",
+        progressBuildingMomentum: "Tomando impulso",
+        progressSolidFooting: "Base sólida",
+        progressText: "{known} de {total} tarjetas actuales marcadas como conocidas.",
+        revealHide: "Mostrar / ocultar",
+        knowThis: "Ya la sé",
+        nextCard: "Siguiente tarjeta",
+        comprehension: "Comprensión",
+        quizTitle: "Elige el significado correcto",
+        prompt: "Pregunta",
+        nextQuestion: "Siguiente pregunta",
+        phraseLab: "Laboratorio de frases",
+        phraseEmptyState: "Toca las fichas para construir la traducción.",
+        checkPhrase: "Comprobar frase",
+        clearPhrase: "Limpiar",
+        nextPhrase: "Siguiente frase",
+        roadmapLabel: "Ruta del curso",
+        roadmapTitle: "La primera versión se concentra en tres cursos centrales completos",
+        hostingLabel: "Alojamiento",
+        githubPagesCompatible: "Compatible con GitHub Pages",
+        hostingText: "Esta app es un solo archivo HTML. Súbelo a un repositorio y publícalo sin pipeline de compilación.",
+        offlineLabel: "Sin conexión",
+        localFirstProgress: "Progreso local primero",
+        offlineText: "Las estadísticas se guardan en localStorage para estudiar sin iniciar sesión.",
+        expandableLabel: "Ampliable",
+        contentEmbedded: "Contenido incrustado",
+        expandableText: "Agrega más paquetes de idioma ampliando el conjunto de datos inline.",
+        accessLabel: "Acceso",
+        noAccountWall: "Sin muro de cuentas",
+        accessText: "No hay suscripciones, cuentas ni funciones de pago en la arquitectura.",
+        roundLabel: "Ronda {round}",
+        phraseHint: "Construye: {target}",
+        cardHidden: "Toca mostrar cuando quieras ver el significado.",
+        cardKnown: "Marcada como conocida",
+        cardUnknown: "Sigue en rotación",
+        quizCorrect: "Correcto. Sigue mientras el significado sigue fresco.",
+        quizIncorrect: "Todavía no. \"{prompt}\" significa \"{answer}\".",
+        phraseNeedBuild: "Construye la frase antes de comprobarla.",
+        phraseCorrect: "Frase correcta. Pasa a la siguiente.",
+        phraseIncorrect: "Casi, pero no es correcta. Objetivo: {target}",
+        speechUnavailable: "La síntesis de voz no está disponible en este navegador.",
+        uiAuto: "Automático",
+        uiLanguageNames: { en: "English", es: "Español", fr: "Français", ja: "日本語" },
+        studyLanguageNames: { english: "Inglés", spanish: "Español", mandarin: "Chino mandarín" }
+      },
+      fr: {
+        pageTitle: "Open Tongues",
+        heroBadge: "Open Tongues · apprendre sans abonnement",
+        heroTitle: "Un apprentissage des langues qui reste gratuit.",
+        heroHostBadge: "Fichier unique · prêt pour GitHub Pages",
+        heroCopy: "Travaillez le vocabulaire, la construction de phrases, la compréhension et l'oral dans une seule page adaptée au hors ligne. Tout vit dans ce fichier, la progression reste dans le navigateur et le contenu peut grandir sans infrastructure supplémentaire.",
+        studyLanguageLabel: "Langue étudiée",
+        uiLanguageLabel: "Langue de l'interface",
+        intensityLabel: "Intensité",
+        difficultyGentle: "Douce",
+        difficultyFocused: "Ciblée",
+        difficultyStretch: "Soutenue",
+        shuffleDeck: "Mélanger les cartes",
+        speakCurrentCard: "Prononcer la carte",
+        resetProgress: "Réinitialiser la progression",
+        masteredCards: "Cartes maîtrisées",
+        quizAccuracy: "Précision du quiz",
+        sessionsToday: "Sessions aujourd'hui",
+        phraseWins: "Phrases réussies",
+        coreStudio: "Studio central",
+        coreStudioTitle: "Travaillez la langue sous plusieurs angles",
+        tabOverview: "Vue d'ensemble",
+        tabFlashcards: "Cartes",
+        tabQuiz: "Quiz",
+        tabPhrases: "Atelier de phrases",
+        currentTrack: "Parcours actuel",
+        progressMap: "Carte de progression",
+        percentCompleteSuffix: "% terminé",
+        progressStartingPoint: "Point de départ",
+        progressBuildingMomentum: "En train de prendre de l'élan",
+        progressSolidFooting: "Base solide",
+        progressText: "{known} cartes connues sur {total} pour le vocabulaire actuel.",
+        revealHide: "Révéler / masquer",
+        knowThis: "Je connais",
+        nextCard: "Carte suivante",
+        comprehension: "Compréhension",
+        quizTitle: "Choisissez le bon sens",
+        prompt: "Invite",
+        nextQuestion: "Question suivante",
+        phraseLab: "Atelier de phrases",
+        phraseEmptyState: "Touchez les tuiles pour construire la traduction.",
+        checkPhrase: "Vérifier la phrase",
+        clearPhrase: "Effacer",
+        nextPhrase: "Phrase suivante",
+        roadmapLabel: "Parcours du cours",
+        roadmapTitle: "La première version se concentre sur trois parcours complets",
+        hostingLabel: "Hébergement",
+        githubPagesCompatible: "Compatible GitHub Pages",
+        hostingText: "Cette application tient dans un seul fichier HTML. Publiez-la dans un dépôt sans pipeline de build.",
+        offlineLabel: "Hors ligne",
+        localFirstProgress: "Progression locale d'abord",
+        offlineText: "Les statistiques sont stockées dans localStorage pour travailler sans compte.",
+        expandableLabel: "Extensible",
+        contentEmbedded: "Contenu intégré",
+        expandableText: "Ajoutez d'autres packs linguistiques en étendant le jeu de données intégré.",
+        accessLabel: "Accès",
+        noAccountWall: "Sans mur de compte",
+        accessText: "Aucun abonnement, compte ou fonctionnalité payante n'est intégré à l'architecture.",
+        roundLabel: "Manche {round}",
+        phraseHint: "Construire : {target}",
+        cardHidden: "Révélez quand vous voulez voir le sens.",
+        cardKnown: "Carte maîtrisée",
+        cardUnknown: "Encore en rotation",
+        quizCorrect: "Correct. Continuez tant que le sens est encore frais.",
+        quizIncorrect: "Pas cette fois. \"{prompt}\" signifie \"{answer}\".",
+        phraseNeedBuild: "Construisez la phrase avant de la vérifier.",
+        phraseCorrect: "Phrase correcte. Passez à la suivante.",
+        phraseIncorrect: "Presque, mais ce n'est pas correct. Cible : {target}",
+        speechUnavailable: "La synthèse vocale n'est pas disponible dans ce navigateur.",
+        uiAuto: "Auto",
+        uiLanguageNames: { en: "English", es: "Español", fr: "Français", ja: "日本語" },
+        studyLanguageNames: { english: "Anglais", spanish: "Espagnol", mandarin: "Mandarin" }
+      },
+      ja: {
+        pageTitle: "Open Tongues",
+        heroBadge: "Open Tongues ・ 購読なしで学べる",
+        heroTitle: "無料のまま続く語学学習。",
+        heroHostBadge: "単一ファイル ・ GitHub Pages 対応",
+        heroCopy: "語彙、文作り、読解、音声練習をオフライン向けの 1 ページにまとめました。すべてこのファイルに入り、進捗はブラウザに保存され、追加のインフラなしで内容を拡張できます。",
+        studyLanguageLabel: "学習する言語",
+        uiLanguageLabel: "表示言語",
+        intensityLabel: "強度",
+        difficultyGentle: "やさしく",
+        difficultyFocused: "集中",
+        difficultyStretch: "挑戦",
+        shuffleDeck: "カードをシャッフル",
+        speakCurrentCard: "現在のカードを読み上げる",
+        resetProgress: "進捗をリセット",
+        masteredCards: "習得済みカード",
+        quizAccuracy: "クイズ正答率",
+        sessionsToday: "今日の学習回数",
+        phraseWins: "フレーズ正解数",
+        coreStudio: "学習スタジオ",
+        coreStudioTitle: "いくつもの角度から言語を鍛える",
+        tabOverview: "概要",
+        tabFlashcards: "フラッシュカード",
+        tabQuiz: "クイズ",
+        tabPhrases: "フレーズラボ",
+        currentTrack: "現在のトラック",
+        progressMap: "進捗マップ",
+        percentCompleteSuffix: "% 完了",
+        progressStartingPoint: "スタート地点",
+        progressBuildingMomentum: "勢いが出てきた",
+        progressSolidFooting: "しっかり定着",
+        progressText: "現在の語彙カード {total} 枚中 {known} 枚を既知として記録しています。",
+        revealHide: "表示 / 非表示",
+        knowThis: "これは分かる",
+        nextCard: "次のカード",
+        comprehension: "理解",
+        quizTitle: "正しい意味を選ぶ",
+        prompt: "問題",
+        nextQuestion: "次の問題",
+        phraseLab: "フレーズラボ",
+        phraseEmptyState: "単語タイルを押して訳文を組み立ててください。",
+        checkPhrase: "フレーズを確認",
+        clearPhrase: "クリア",
+        nextPhrase: "次のフレーズ",
+        roadmapLabel: "コース構成",
+        roadmapTitle: "初回リリースは 3 つの中核コースに集中しています",
+        hostingLabel: "ホスティング",
+        githubPagesCompatible: "GitHub Pages 対応",
+        hostingText: "このアプリは単一の HTML ファイルです。リポジトリに置くだけでビルド不要で公開できます。",
+        offlineLabel: "オフライン",
+        localFirstProgress: "ローカル保存の進捗",
+        offlineText: "学習統計は localStorage に保存されるため、ログインなしで使えます。",
+        expandableLabel: "拡張可能",
+        contentEmbedded: "内容は埋め込み済み",
+        expandableText: "インラインのデータセットを広げれば言語パックを追加できます。",
+        accessLabel: "アクセス",
+        noAccountWall: "アカウント不要",
+        accessText: "購読、アカウント、課金機能は設計に含まれていません。",
+        roundLabel: "ラウンド {round}",
+        phraseHint: "組み立て: {target}",
+        cardHidden: "意味を見たいときに表示してください。",
+        cardKnown: "既知として記録済み",
+        cardUnknown: "まだ学習中",
+        quizCorrect: "正解です。意味が鮮明なうちに進みましょう。",
+        quizIncorrect: "今回は違います。\"{prompt}\" は \"{answer}\" の意味です。",
+        phraseNeedBuild: "確認する前にフレーズを組み立ててください。",
+        phraseCorrect: "正しいフレーズです。次へ進みましょう。",
+        phraseIncorrect: "惜しいですが不正解です。正解: {target}",
+        speechUnavailable: "このブラウザでは音声合成を利用できません。",
+        uiAuto: "自動",
+        uiLanguageNames: { en: "English", es: "Español", fr: "Français", ja: "日本語" },
+        studyLanguageNames: { english: "英語", spanish: "スペイン語", mandarin: "標準中国語" }
+      }
+    };
+
+    const storageKey = "open-tongues-progress-v2";
+    const defaults = {
+      studyLanguage: "english",
+      uiLanguage: "auto",
+      difficulty: "gentle",
+      known: {},
+      quizAsked: 0,
+      quizCorrect: 0,
+      phraseWins: 0,
+      sessions: {},
+      cardIndex: 0,
+      reveal: false,
+      quizRound: 1
+    };
+
+    const state = loadState();
+    let currentQuiz = null;
+    let currentPhrase = null;
+    let builtPhrase = [];
+    let quizLocked = false;
+
+    const el = {
+      studyLanguage: document.getElementById("study-language"),
+      uiLanguage: document.getElementById("ui-language"),
+      difficulty: document.getElementById("difficulty"),
+      courseTitle: document.getElementById("course-title"),
+      courseRegion: document.getElementById("course-region"),
+      courseDescription: document.getElementById("course-description"),
+      courseFocus: document.getElementById("course-focus"),
+      lessonGrid: document.getElementById("lesson-grid"),
+      progressValue: document.getElementById("progress-value"),
+      progressCaption: document.getElementById("progress-caption"),
+      progressFill: document.getElementById("progress-fill"),
+      progressText: document.getElementById("progress-text"),
+      statMastered: document.getElementById("stat-mastered"),
+      statQuiz: document.getElementById("stat-quiz"),
+      statSessions: document.getElementById("stat-sessions"),
+      statPhrases: document.getElementById("stat-phrases"),
+      cardCategory: document.getElementById("card-category"),
+      cardTerm: document.getElementById("card-term"),
+      cardTranslation: document.getElementById("card-translation"),
+      cardNotes: document.getElementById("card-notes"),
+      quizRound: document.getElementById("quiz-round"),
+      quizPrompt: document.getElementById("quiz-prompt"),
+      answerGrid: document.getElementById("answer-grid"),
+      quizFeedback: document.getElementById("quiz-feedback"),
+      phraseSource: document.getElementById("phrase-source"),
+      phraseHint: document.getElementById("phrase-hint"),
+      buildArea: document.getElementById("build-area"),
+      tokenGrid: document.getElementById("token-grid"),
+      phraseFeedback: document.getElementById("phrase-feedback")
+    };
+
+    document.querySelectorAll(".tab").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach((tab) => tab.classList.remove("active"));
+        document.querySelectorAll(".tab-panel").forEach((panel) => panel.classList.remove("active"));
+        button.classList.add("active");
+        document.getElementById(`tab-${button.dataset.tab}`).classList.add("active");
+      });
+    });
+
+    document.getElementById("shuffle-button").addEventListener("click", () => {
+      state.cardIndex = randomIndex(pack().cards.length);
+      state.reveal = false;
+      saveAndRender();
+    });
+    document.getElementById("speak-button").addEventListener("click", speakCurrentCard);
+    document.getElementById("reset-button").addEventListener("click", resetProgress);
+    document.getElementById("flip-button").addEventListener("click", () => {
+      state.reveal = !state.reveal;
+      saveAndRender();
+    });
+    document.getElementById("known-button").addEventListener("click", markKnown);
+    document.getElementById("next-card-button").addEventListener("click", nextCard);
+    document.getElementById("next-quiz-button").addEventListener("click", generateQuiz);
+    document.getElementById("check-phrase-button").addEventListener("click", checkPhrase);
+    document.getElementById("clear-phrase-button").addEventListener("click", clearPhrase);
+    document.getElementById("next-phrase-button").addEventListener("click", generatePhrase);
+
+    el.studyLanguage.addEventListener("change", (event) => {
+      state.studyLanguage = event.target.value;
+      state.cardIndex = 0;
+      state.reveal = false;
+      state.quizRound = 1;
+      builtPhrase = [];
+      generateQuiz();
+      generatePhrase();
+      saveAndRender();
+    });
+
+    el.uiLanguage.addEventListener("change", (event) => {
+      state.uiLanguage = event.target.value;
+      saveAndRender();
+    });
+
+    el.difficulty.addEventListener("change", (event) => {
+      state.difficulty = event.target.value;
+      generateQuiz();
+      saveAndRender();
+    });
+
+    init();
+
+    function init() {
+      normalizeState();
+      registerSession();
+      populateSelectors();
+      generateQuiz();
+      generatePhrase();
+      render();
+    }
+
+    function normalizeState() {
+      if (!languagePacks[state.studyLanguage]) {
+        state.studyLanguage = defaults.studyLanguage;
+      }
+      if (!["auto", ...Object.keys(uiTranslations)].includes(state.uiLanguage)) {
+        state.uiLanguage = defaults.uiLanguage;
+      }
+      if (!["gentle", "focused", "stretch"].includes(state.difficulty)) {
+        state.difficulty = defaults.difficulty;
+      }
+    }
+
+    function loadState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+        return saved ? { ...clone(defaults), ...saved } : clone(defaults);
+      } catch {
+        return clone(defaults);
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(storageKey, JSON.stringify(state));
+    }
+
+    function saveAndRender() {
+      saveState();
+      render();
+    }
+
+    function pack() {
+      return languagePacks[state.studyLanguage];
+    }
+
+    function uiCode() {
+      if (state.uiLanguage !== "auto" && uiTranslations[state.uiLanguage]) {
+        return state.uiLanguage;
+      }
+      const candidate = (navigator.languages && navigator.languages[0]) || navigator.language || "en";
+      const base = String(candidate).toLowerCase().split("-")[0];
+      return uiTranslations[base] ? base : "en";
+    }
+
+    function strings() {
+      return uiTranslations[uiCode()] || uiTranslations.en;
+    }
+
+    function t(key, values = {}) {
+      const source = strings()[key] || uiTranslations.en[key] || key;
+      return String(source).replace(/\{(\w+)\}/g, (_, name) => values[name] ?? `{${name}}`);
+    }
+
+    function populateSelectors() {
+      const studyNames = strings().studyLanguageNames || uiTranslations.en.studyLanguageNames;
+      el.studyLanguage.innerHTML = Object.keys(languagePacks).map((key) => `<option value="${key}">${studyNames[key]}</option>`).join("");
+      el.studyLanguage.value = state.studyLanguage;
+
+      const uiNames = uiTranslations.en.uiLanguageNames;
+      el.uiLanguage.innerHTML = [`<option value="auto">${t("uiAuto")}</option>`]
+        .concat(Object.keys(uiTranslations).map((key) => `<option value="${key}">${uiNames[key]}</option>`))
+        .join("");
+      el.uiLanguage.value = state.uiLanguage;
+      el.uiLanguage.options[0].textContent = `${t("uiAuto")} (${strings().uiLanguageNames[uiCode()]})`;
+
+      el.difficulty.innerHTML = [
+        `<option value="gentle">${t("difficultyGentle")}</option>`,
+        `<option value="focused">${t("difficultyFocused")}</option>`,
+        `<option value="stretch">${t("difficultyStretch")}</option>`
+      ].join("");
+      el.difficulty.value = state.difficulty;
+    }
+
+    function renderStaticText() {
+      document.documentElement.lang = uiCode();
+      document.title = t("pageTitle");
+      document.querySelectorAll("[data-i18n]").forEach((node) => {
+        node.textContent = t(node.dataset.i18n);
+      });
+      populateSelectors();
+    }
+
+    function render() {
+      renderStaticText();
+      const currentPack = pack();
+      const cards = currentPack.cards;
+      const currentCard = cards[state.cardIndex % cards.length];
+      const knownCount = cards.filter((card) => isKnown(card.term)).length;
+      const progress = Math.round((knownCount / cards.length) * 100);
+      const quizAccuracy = state.quizAsked ? Math.round((state.quizCorrect / state.quizAsked) * 100) : 0;
+
+      el.courseTitle.textContent = currentPack.title;
+      el.courseRegion.textContent = currentPack.region;
+      el.courseDescription.textContent = currentPack.description;
+      el.courseFocus.innerHTML = currentPack.focus.map((item) => `<span class="chip">${item}</span>`).join("");
+      el.lessonGrid.innerHTML = currentPack.lessons.map((lesson) => `
+        <article class="lesson-card">
+          <div class="module-head">
+            <div>
+              <div class="eyebrow">${lesson.badge}</div>
+              <strong>${lesson.title}</strong>
+            </div>
+            <span class="chip">${lesson.badge}</span>
+          </div>
+          <p class="detail">${lesson.detail}</p>
+        </article>
+      `).join("");
+
+      el.progressValue.textContent = progress;
+      el.progressCaption.textContent = progress < 30 ? t("progressStartingPoint") : progress < 70 ? t("progressBuildingMomentum") : t("progressSolidFooting");
+      el.progressFill.style.width = `${progress}%`;
+      el.progressText.textContent = t("progressText", { known: knownCount, total: cards.length });
+
+      el.statMastered.textContent = String(knownCount);
+      el.statQuiz.textContent = `${quizAccuracy}%`;
+      el.statSessions.textContent = String(sessionCountToday());
+      el.statPhrases.textContent = String(state.phraseWins);
+
+      el.cardCategory.textContent = currentCard.category;
+      el.cardTerm.textContent = currentCard.term;
+      el.cardTranslation.textContent = state.reveal ? currentCard.translation : t("cardHidden");
+      el.cardNotes.innerHTML = [currentCard.note, isKnown(currentCard.term) ? t("cardKnown") : t("cardUnknown")]
+        .map((item) => `<span class="chip">${item}</span>`)
+        .join("");
+
+      el.quizRound.textContent = t("roundLabel", { round: state.quizRound });
+      renderPhraseBuild();
+    }
+
+    function markKnown() {
+      state.known[knownKey(pack().cards[state.cardIndex % pack().cards.length].term)] = true;
+      state.reveal = true;
+      saveAndRender();
+    }
+
+    function nextCard() {
+      state.cardIndex = (state.cardIndex + 1) % pack().cards.length;
+      state.reveal = false;
+      saveAndRender();
+    }
+
+    function isKnown(term) {
+      return Boolean(state.known[knownKey(term)]);
+    }
+
+    function knownKey(term) {
+      return `${state.studyLanguage}:${term}`;
+    }
+
+    function optionCount() {
+      return state.difficulty === "gentle" ? 3 : 4;
+    }
+
+    function generateQuiz() {
+      const cards = [...pack().cards];
+      const promptCard = cards[randomIndex(cards.length)];
+      const distractors = shuffle(cards.filter((card) => card.term !== promptCard.term).map((card) => card.translation)).slice(0, optionCount() - 1);
+      currentQuiz = { prompt: promptCard.term, answer: promptCard.translation, options: shuffle([promptCard.translation, ...distractors]) };
+      quizLocked = false;
+      el.quizPrompt.textContent = currentQuiz.prompt;
+      el.quizFeedback.textContent = "";
+      el.answerGrid.innerHTML = currentQuiz.options.map((option) => `<button class="answer" data-answer="${escapeHtml(option)}">${option}</button>`).join("");
+      el.answerGrid.querySelectorAll(".answer").forEach((button) => {
+        button.addEventListener("click", () => answerQuiz(button.dataset.answer, button));
+      });
+      render();
+    }
+
+    function answerQuiz(answer, button) {
+      if (!currentQuiz || quizLocked) {
+        return;
+      }
+      quizLocked = true;
+      state.quizAsked += 1;
+      const correct = answer === currentQuiz.answer;
+      if (correct) {
+        state.quizCorrect += 1;
+        state.quizRound += 1;
+      }
+      el.answerGrid.querySelectorAll(".answer").forEach((optionButton) => {
+        if (optionButton.dataset.answer === currentQuiz.answer) {
+          optionButton.classList.add("correct");
+        } else if (optionButton === button && !correct) {
+          optionButton.classList.add("wrong");
+        }
+        optionButton.disabled = true;
+      });
+      el.quizFeedback.textContent = correct ? t("quizCorrect") : t("quizIncorrect", { prompt: currentQuiz.prompt, answer: currentQuiz.answer });
+      saveAndRender();
+    }
+
+    function generatePhrase() {
+      currentPhrase = pack().phrases[randomIndex(pack().phrases.length)];
+      builtPhrase = [];
+      el.phraseSource.textContent = currentPhrase.source;
+      el.phraseHint.textContent = t("phraseHint", { target: currentPhrase.target });
+      el.phraseFeedback.textContent = "";
+      el.tokenGrid.innerHTML = shuffle([...currentPhrase.tiles]).map((tile) => `<button class="token" data-token="${escapeHtml(tile)}">${tile}</button>`).join("");
+      el.tokenGrid.querySelectorAll(".token").forEach((button) => {
+        button.addEventListener("click", () => {
+          builtPhrase.push(button.dataset.token);
+          button.disabled = true;
+          renderPhraseBuild();
+        });
+      });
+      render();
+    }
+
+    function renderPhraseBuild() {
+      if (!builtPhrase.length) {
+        el.buildArea.innerHTML = `<span class="empty">${t("phraseEmptyState")}</span>`;
+        return;
+      }
+      el.buildArea.innerHTML = builtPhrase.map((token, index) => `<button class="built-token" data-index="${index}">${token}</button>`).join("");
+      el.buildArea.querySelectorAll(".built-token").forEach((button) => {
+        button.addEventListener("click", () => removePhraseToken(Number(button.dataset.index)));
+      });
+    }
+
+    function removePhraseToken(index) {
+      const removed = builtPhrase.splice(index, 1)[0];
+      const original = Array.from(el.tokenGrid.querySelectorAll(".token")).find((button) => button.dataset.token === removed && button.disabled);
+      if (original) {
+        original.disabled = false;
+      }
+      renderPhraseBuild();
+    }
+
+    function clearPhrase() {
+      builtPhrase = [];
+      el.tokenGrid.querySelectorAll(".token").forEach((button) => { button.disabled = false; });
+      el.phraseFeedback.textContent = "";
+      renderPhraseBuild();
+    }
+
+    function checkPhrase() {
+      const built = builtPhrase.join(" ").replace(/\s+/g, " ").trim();
+      const target = currentPhrase.target.replace(/\s+/g, " ").trim();
+      if (!built) {
+        el.phraseFeedback.textContent = t("phraseNeedBuild");
+        return;
+      }
+      if (built === target) {
+        state.phraseWins += 1;
+        el.phraseFeedback.textContent = t("phraseCorrect");
+        saveAndRender();
+        return;
+      }
+      el.phraseFeedback.textContent = t("phraseIncorrect", { target: currentPhrase.target });
+    }
+
+    function speakCurrentCard() {
+      if (!("speechSynthesis" in window)) {
+        alert(t("speechUnavailable"));
+        return;
+      }
+      const current = pack().cards[state.cardIndex % pack().cards.length];
+      const utterance = new SpeechSynthesisUtterance(current.term);
+      utterance.lang = { english: "en-US", spanish: "es-ES", mandarin: "zh-CN" }[state.studyLanguage] || "en-US";
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function resetProgress() {
+      const studyLanguage = state.studyLanguage;
+      const uiLanguage = state.uiLanguage;
+      const difficulty = state.difficulty;
+      Object.assign(state, clone(defaults), { studyLanguage, uiLanguage, difficulty });
+      registerSession();
+      generateQuiz();
+      generatePhrase();
+      saveAndRender();
+    }
+
+    function registerSession() {
+      const today = new Date().toISOString().slice(0, 10);
+      state.sessions[today] = (state.sessions[today] || 0) + 1;
+      saveState();
+    }
+
+    function sessionCountToday() {
+      const today = new Date().toISOString().slice(0, 10);
+      return state.sessions[today] || 0;
+    }
+
+    function randomIndex(length) {
+      return Math.floor(Math.random() * length);
+    }
+
+    function shuffle(items) {
+      const copy = [...items];
+      for (let index = copy.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [copy[index], copy[swapIndex]] = [copy[swapIndex], copy[index]];
+      }
+      return copy;
+    }
+
+    function clone(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+  </script>
+</body>
+</html>
