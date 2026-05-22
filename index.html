@@ -364,7 +364,7 @@
       <div class="stats">
         <div class="stat"><strong id="stat-mastered">0</strong><span data-i18n="masteredCards">Mastered cards</span></div>
         <div class="stat"><strong id="stat-quiz">0%</strong><span data-i18n="quizAccuracy">Quiz accuracy</span></div>
-        <div class="stat"><strong id="stat-sessions">0</strong><span data-i18n="sessionsToday">Sessions today</span></div>
+        <div class="stat"><strong id="stat-sessions">0</strong><span data-i18n="dayStreak">Day streak</span></div>
         <div class="stat"><strong id="stat-phrases">0</strong><span data-i18n="phraseWins">Phrase wins</span></div>
       </div>
     </section>
@@ -384,6 +384,7 @@
           <button class="tab" data-tab="quiz" data-i18n="tabQuiz">Quiz</button>
           <button class="tab" data-tab="phrases" data-i18n="tabPhrases">Phrase Lab</button>
           <button class="tab" data-tab="advanced" data-i18n="tabAdvanced">Advanced</button>
+          <button class="tab" data-tab="type" data-i18n="tabType">Type it</button>
         </div>
 
         <div class="tab-panel active" id="tab-overview">
@@ -425,6 +426,7 @@
               <div class="chips" id="card-notes"></div>
               <div class="action-row" style="margin-top: 14px; justify-content: flex-start;">
                 <button class="secondary" id="flip-button" data-i18n="revealHide">Reveal / hide</button>
+                <button class="ghost" id="hard-button" data-i18n="stillLearning">Still learning</button>
                 <button class="gold" id="known-button" data-i18n="knowThis">I know this</button>
                 <button class="warm" id="next-card-button" data-i18n="nextCard">Next card</button>
               </div>
@@ -494,6 +496,28 @@
               <button class="gold" id="speak-advanced-button" data-i18n="speakSelection">Speak selection</button>
               <button class="secondary" id="clear-advanced-button" data-i18n="clearAdvanced">Clear</button>
               <button class="warm" id="next-advanced-button" data-i18n="nextAdvanced">Next challenge</button>
+            </div>
+          </article>
+        </div>
+
+        <div class="tab-panel" id="tab-type">
+          <article class="challenge-card">
+            <div class="module-head">
+              <div>
+                <div class="eyebrow" data-i18n="typeLabLabel">Type it</div>
+                <strong id="type-direction"></strong>
+              </div>
+              <span class="chip" id="type-box-chip"></span>
+            </div>
+            <div class="prompt-box">
+              <div class="eyebrow" id="type-prompt-label"></div>
+              <h3 id="type-prompt" style="margin-top: 8px; font-size: clamp(1.4rem, 4vw, 2.5rem);"></h3>
+            </div>
+            <input type="text" class="text-input" id="type-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="margin-top: 10px;" />
+            <div class="feedback" id="type-feedback"></div>
+            <div class="action-row" style="justify-content: flex-start; margin-top: 8px;">
+              <button class="primary" id="check-type-button" data-i18n="checkType">Check</button>
+              <button class="warm" id="next-type-button" data-i18n="nextCard">Next</button>
             </div>
           </article>
         </div>
@@ -577,7 +601,27 @@
           { term: "near", translation: "close to", category: "Preposition", note: "Location word" },
           { term: "far", translation: "at a long distance", category: "Preposition", note: "Distance word" },
           { term: "through", translation: "from one side to the other", category: "Preposition", note: "Movement connector" },
-          { term: "around", translation: "on all sides or nearby", category: "Preposition", note: "Direction and place" }
+          { term: "around", translation: "on all sides or nearby", category: "Preposition", note: "Direction and place" },
+          { term: "sorry", translation: "expression of apology", category: "Courtesy", note: "Common social phrase" },
+          { term: "excuse me", translation: "polite way to get attention or pass", category: "Courtesy", note: "Attention or mild apology" },
+          { term: "help", translation: "assist someone in need", category: "Verb", note: "Emergency and daily use" },
+          { term: "open", translation: "not closed or sealed", category: "Adjective", note: "Shops, doors, schedules" },
+          { term: "closed", translation: "not open or accessible", category: "Adjective", note: "Common sign word" },
+          { term: "hot", translation: "high in temperature", category: "Adjective", note: "Weather and food" },
+          { term: "cold", translation: "low in temperature", category: "Adjective", note: "Weather and drinks" },
+          { term: "big", translation: "large in size", category: "Adjective", note: "Size descriptor" },
+          { term: "small", translation: "little in size", category: "Adjective", note: "Size descriptor" },
+          { term: "good", translation: "having positive quality", category: "Adjective", note: "Extremely common" },
+          { term: "money", translation: "currency used for payments", category: "Objects", note: "Travel essential" },
+          { term: "time", translation: "the ongoing sequence of events", category: "Concepts", note: "Very high-frequency noun" },
+          { term: "hour", translation: "a period of sixty minutes", category: "Time", note: "Schedule word" },
+          { term: "minute", translation: "a period of sixty seconds", category: "Time", note: "Timing and schedules" },
+          { term: "name", translation: "what someone or something is called", category: "Identity", note: "Core introduction word" },
+          { term: "understand", translation: "comprehend the meaning of something", category: "Verb", note: "Key communication verb" },
+          { term: "speak", translation: "produce words with voice", category: "Verb", note: "Language learning context" },
+          { term: "read", translation: "look at and process written text", category: "Verb", note: "Literacy skill verb" },
+          { term: "write", translation: "form words with a pen or keyboard", category: "Verb", note: "Communication skill verb" },
+          { term: "number", translation: "a mathematical quantity or count", category: "Concepts", note: "Addresses and statistics" }
         ],
         phrases: [
           { source: "Greet someone and introduce yourself", target: "Hello, I am Maya", tiles: ["Hello,", "I", "am", "Maya", "ticket", "today"] },
@@ -655,7 +699,27 @@
           { term: "cerca", translation: "near", category: "Preposition", note: "Location relation" },
           { term: "lejos", translation: "far", category: "Preposition", note: "Distance relation" },
           { term: "a través de", translation: "through", category: "Preposition", note: "Movement connector" },
-          { term: "alrededor", translation: "around", category: "Preposition", note: "Spatial relation" }
+          { term: "alrededor", translation: "around", category: "Preposition", note: "Spatial relation" },
+          { term: "lo siento", translation: "sorry", category: "Courtesy", note: "Sincere apology" },
+          { term: "perdón", translation: "excuse me / pardon", category: "Courtesy", note: "Attention or mild apology" },
+          { term: "ayuda", translation: "help", category: "Verb", note: "Emergency and daily use" },
+          { term: "abierto", translation: "open", category: "Adjective", note: "Shops and doors" },
+          { term: "cerrado", translation: "closed", category: "Adjective", note: "Common sign word" },
+          { term: "caliente", translation: "hot", category: "Adjective", note: "Weather and food" },
+          { term: "frío", translation: "cold", category: "Adjective", note: "Weather and drinks" },
+          { term: "grande", translation: "big", category: "Adjective", note: "Size descriptor" },
+          { term: "pequeño", translation: "small", category: "Adjective", note: "Size descriptor" },
+          { term: "bueno", translation: "good", category: "Adjective", note: "Core positive adjective" },
+          { term: "dinero", translation: "money", category: "Objects", note: "Travel essential" },
+          { term: "tiempo", translation: "time / weather", category: "Concepts", note: "Double-meaning high-frequency noun" },
+          { term: "hora", translation: "hour", category: "Time", note: "Schedule word" },
+          { term: "minuto", translation: "minute", category: "Time", note: "Timing word" },
+          { term: "nombre", translation: "name", category: "Identity", note: "Core introduction word" },
+          { term: "entender", translation: "to understand", category: "Verb", note: "Key communication verb" },
+          { term: "hablar", translation: "to speak", category: "Verb", note: "Primary communication verb" },
+          { term: "leer", translation: "to read", category: "Verb", note: "Literacy skill verb" },
+          { term: "escribir", translation: "to write", category: "Verb", note: "Communication skill verb" },
+          { term: "número", translation: "number", category: "Concepts", note: "Counts and addresses" }
         ],
         phrases: [
           { source: "Greet someone and introduce yourself", target: "Hola, soy Maya", tiles: ["Hola,", "soy", "Maya", "boleto", "hoy"] },
@@ -733,7 +797,27 @@
           { term: "附近", translation: "nearby", category: "Preposition", note: "Location relation" },
           { term: "远", translation: "far", category: "Preposition", note: "Distance relation" },
           { term: "穿过", translation: "through", category: "Preposition", note: "Movement connector" },
-          { term: "周围", translation: "around", category: "Preposition", note: "Spatial relation" }
+          { term: "周围", translation: "around", category: "Preposition", note: "Spatial relation" },
+          { term: "对不起", translation: "sorry", category: "Courtesy", note: "Sincere apology" },
+          { term: "不好意思", translation: "excuse me", category: "Courtesy", note: "Mild apology or getting attention" },
+          { term: "帮助", translation: "help", category: "Verb", note: "Assistance or emergency" },
+          { term: "开", translation: "open", category: "Adjective", note: "Doors and shops" },
+          { term: "关", translation: "closed", category: "Adjective", note: "Doors and shops" },
+          { term: "热", translation: "hot", category: "Adjective", note: "Weather and food" },
+          { term: "冷", translation: "cold", category: "Adjective", note: "Weather and drinks" },
+          { term: "大", translation: "big", category: "Adjective", note: "Size descriptor" },
+          { term: "小", translation: "small", category: "Adjective", note: "Size descriptor" },
+          { term: "好", translation: "good", category: "Adjective", note: "Extremely common adjective" },
+          { term: "钱", translation: "money", category: "Objects", note: "Travel essential" },
+          { term: "时间", translation: "time", category: "Concepts", note: "Very high-frequency noun" },
+          { term: "小时", translation: "hour", category: "Time", note: "Schedule word" },
+          { term: "分钟", translation: "minute", category: "Time", note: "Timing word" },
+          { term: "名字", translation: "name", category: "Identity", note: "Core introduction word" },
+          { term: "理解", translation: "to understand", category: "Verb", note: "Key communication verb" },
+          { term: "说", translation: "to speak", category: "Verb", note: "Primary communication verb" },
+          { term: "读", translation: "to read", category: "Verb", note: "Literacy skill verb" },
+          { term: "写", translation: "to write", category: "Verb", note: "Communication skill verb" },
+          { term: "号码", translation: "number", category: "Concepts", note: "Addresses and contacts" }
         ],
         phrases: [
           { source: "Greet someone and introduce yourself", target: "你好，我叫 Maya", tiles: ["你好，", "我", "叫", "Maya", "票", "今天"] },
@@ -852,7 +936,20 @@
         mandarinAudioNotice: "Mandarin audio is currently unreliable and may sound incorrect in this browser.",
         uiAuto: "Auto",
         uiLanguageNames: { en: "English", es: "Español", fr: "Français", ja: "日本語" },
-        studyLanguageNames: { english: "English", spanish: "Spanish", mandarin: "Mandarin Chinese" }
+        studyLanguageNames: { english: "English", spanish: "Spanish", mandarin: "Mandarin Chinese" },
+        tabType: "Type it",
+        typeLabLabel: "Type it",
+        typeDirectionForward: "Type the translation",
+        typeDirectionReverse: "Type the original term",
+        typeInputPlaceholder: "Type your answer\u2026",
+        checkType: "Check",
+        typeCorrect: "Correct! Card moved up.",
+        typeIncorrect: "Not quite. Answer: {answer}",
+        srsNew: "New",
+        srsLearned: "Learned",
+        srsBox: "Box",
+        stillLearning: "Still learning",
+        dayStreak: "Day streak"
       },
       es: {
         pageTitle: "Open Tongues",
@@ -939,7 +1036,20 @@
         mandarinAudioNotice: "El audio de mandarín es inestable por ahora y puede sonar incorrecto en este navegador.",
         uiAuto: "Automático",
         uiLanguageNames: { en: "English", es: "Español", fr: "Français", ja: "日本語" },
-        studyLanguageNames: { english: "Inglés", spanish: "Español", mandarin: "Chino mandarín" }
+        studyLanguageNames: { english: "Inglés", spanish: "Español", mandarin: "Chino mandarín" },
+        tabType: "Escríbelo",
+        typeLabLabel: "Escríbelo",
+        typeDirectionForward: "Escribe la traducción",
+        typeDirectionReverse: "Escribe el término original",
+        typeInputPlaceholder: "Escribe tu respuesta\u2026",
+        checkType: "Comprobar",
+        typeCorrect: "\u00a1Correcto! Tarjeta avanzada.",
+        typeIncorrect: "No es correcto. Respuesta: {answer}",
+        srsNew: "Nueva",
+        srsLearned: "Aprendida",
+        srsBox: "Caja",
+        stillLearning: "Aún aprendiendo",
+        dayStreak: "Racha de días"
       },
       fr: {
         pageTitle: "Open Tongues",
@@ -1026,7 +1136,20 @@
         mandarinAudioNotice: "L'audio mandarin est actuellement instable et peut être incorrect dans ce navigateur.",
         uiAuto: "Auto",
         uiLanguageNames: { en: "English", es: "Español", fr: "Français", ja: "日本語" },
-        studyLanguageNames: { english: "Anglais", spanish: "Espagnol", mandarin: "Mandarin" }
+        studyLanguageNames: { english: "Anglais", spanish: "Espagnol", mandarin: "Mandarin" },
+        tabType: "\u00c9crivez-le",
+        typeLabLabel: "\u00c9crivez-le",
+        typeDirectionForward: "\u00c9crivez la traduction",
+        typeDirectionReverse: "\u00c9crivez le terme original",
+        typeInputPlaceholder: "\u00c9crivez votre r\u00e9ponse\u2026",
+        checkType: "V\u00e9rifier",
+        typeCorrect: "Correct\u00a0! Carte avanc\u00e9e.",
+        typeIncorrect: "Pas tout \u00e0 fait. R\u00e9ponse\u00a0: {answer}",
+        srsNew: "Nouveau",
+        srsLearned: "Appris",
+        srsBox: "Bo\u00eete",
+        stillLearning: "J\u2019apprends encore",
+        dayStreak: "Jours cons\u00e9cutifs"
       },
       ja: {
         pageTitle: "Open Tongues",
@@ -1113,7 +1236,20 @@
         mandarinAudioNotice: "このブラウザでは中国語音声が不安定で、不正確に聞こえる場合があります。",
         uiAuto: "自動",
         uiLanguageNames: { en: "English", es: "Español", fr: "Français", ja: "日本語" },
-        studyLanguageNames: { english: "英語", spanish: "スペイン語", mandarin: "標準中国語" }
+        studyLanguageNames: { english: "英語", spanish: "スペイン語", mandarin: "標準中国語" },
+        tabType: "書いて",
+        typeLabLabel: "書いてみよう",
+        typeDirectionForward: "訳を入力してください",
+        typeDirectionReverse: "元の語を入力してください",
+        typeInputPlaceholder: "ここに入力\u2026",
+        checkType: "確認",
+        typeCorrect: "正解！カードを次のレベルへ。",
+        typeIncorrect: "惜しい。正解：{answer}",
+        srsNew: "新規",
+        srsLearned: "習得",
+        srsBox: "ボックス",
+        stillLearning: "まだ学習中",
+        dayStreak: "連続日数"
       }
     };
 
@@ -1173,7 +1309,27 @@
       "下周": "xià zhōu",
       "可以": "kě yǐ",
       "学得": "xué de",
-      "更多": "gèng duō"
+      "更多": "gèng duō",
+      "对不起": "duì bu qǐ",
+      "不好意思": "bù hǎo yì si",
+      "帮助": "bāng zhù",
+      "开": "kāi",
+      "关": "guān",
+      "热": "rè",
+      "冷": "lěng",
+      "大": "dà",
+      "小": "xiǎo",
+      "好": "hǎo",
+      "钱": "qián",
+      "时间": "shí jiān",
+      "小时": "xiǎo shí",
+      "分钟": "fēn zhōng",
+      "名字": "míng zi",
+      "理解": "lǐ jiě",
+      "说": "shuō",
+      "读": "dú",
+      "写": "xiě",
+      "号码": "hào mǎ"
     };
 
     const storageKey = "open-tongues-progress-v2";
@@ -1182,6 +1338,7 @@
       uiLanguage: "auto",
       difficulty: "gentle",
       known: {},
+      srs: {},
       quizAsked: 0,
       quizCorrect: 0,
       phraseWins: 0,
@@ -1195,6 +1352,8 @@
     let currentQuiz = null;
     let currentPhrase = null;
     let currentAdvanced = null;
+    let currentType = null;
+    let typeDirection = "forward";
     let builtPhrase = [];
     let builtAdvanced = [];
     let quizLocked = false;
@@ -1233,7 +1392,14 @@
       advancedBuildArea: document.getElementById("advanced-build-area"),
       advancedTokenGrid: document.getElementById("advanced-token-grid"),
       advancedFeedback: document.getElementById("advanced-feedback"),
-      mandarinAudioNotice: document.getElementById("mandarin-audio-notice")
+      mandarinAudioNotice: document.getElementById("mandarin-audio-notice"),
+      hardButton: document.getElementById("hard-button"),
+      typePrompt: document.getElementById("type-prompt"),
+      typePromptLabel: document.getElementById("type-prompt-label"),
+      typeInput: document.getElementById("type-input"),
+      typeFeedback: document.getElementById("type-feedback"),
+      typeDirection: document.getElementById("type-direction"),
+      typeBoxChip: document.getElementById("type-box-chip")
     };
 
     document.querySelectorAll(".tab").forEach((button) => {
@@ -1246,7 +1412,7 @@
     });
 
     document.getElementById("shuffle-button").addEventListener("click", () => {
-      state.cardIndex = randomIndex(pack().cards.length);
+      state.cardIndex = pickNextCardIndex();
       state.reveal = false;
       saveAndRender();
     });
@@ -1256,6 +1422,7 @@
       state.reveal = !state.reveal;
       saveAndRender();
     });
+    document.getElementById("hard-button").addEventListener("click", markHard);
     document.getElementById("known-button").addEventListener("click", markKnown);
     document.getElementById("next-card-button").addEventListener("click", nextCard);
     document.getElementById("next-quiz-button").addEventListener("click", generateQuiz);
@@ -1267,10 +1434,15 @@
     document.getElementById("speak-advanced-button").addEventListener("click", () => speakBuiltSelection("advanced"));
     document.getElementById("clear-advanced-button").addEventListener("click", clearAdvanced);
     document.getElementById("next-advanced-button").addEventListener("click", generateAdvanced);
+    document.getElementById("check-type-button").addEventListener("click", checkType);
+    document.getElementById("next-type-button").addEventListener("click", generateType);
+    document.getElementById("type-input").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") checkType();
+    });
 
     el.studyLanguage.addEventListener("change", (event) => {
       state.studyLanguage = event.target.value;
-      state.cardIndex = 0;
+      state.cardIndex = pickNextCardIndex();
       state.reveal = false;
       state.quizRound = 1;
       builtPhrase = [];
@@ -1278,6 +1450,7 @@
       generateQuiz();
       generatePhrase();
       generateAdvanced();
+      generateType();
       saveAndRender();
     });
 
@@ -1298,9 +1471,11 @@
       normalizeState();
       registerSession();
       populateSelectors();
+      state.cardIndex = pickNextCardIndex();
       generateQuiz();
       generatePhrase();
       generateAdvanced();
+      generateType();
       render();
     }
 
@@ -1421,13 +1596,15 @@
 
       el.statMastered.textContent = String(knownCount);
       el.statQuiz.textContent = `${quizAccuracy}%`;
-      el.statSessions.textContent = String(sessionCountToday());
+      el.statSessions.textContent = String(currentStreak());
       el.statPhrases.textContent = String(state.phraseWins);
 
       el.cardCategory.textContent = currentCard.category;
       el.cardTerm.textContent = currentCard.term;
       el.cardTranslation.textContent = state.reveal ? currentCard.translation : t("cardHidden");
-      el.cardNotes.innerHTML = [currentCard.note, isKnown(currentCard.term) ? t("cardKnown") : t("cardUnknown")]
+      const box = getCardBox(currentCard.term);
+      const boxLabel = box === 0 ? t("srsNew") : box >= 5 ? t("srsLearned") : `${t("srsBox")} ${box}`;
+      el.cardNotes.innerHTML = [currentCard.note, boxLabel]
         .map((item) => `<span class="chip">${item}</span>`)
         .join("");
 
@@ -1453,19 +1630,29 @@
     }
 
     function markKnown() {
-      state.known[knownKey(pack().cards[state.cardIndex % pack().cards.length].term)] = true;
+      const currentCard = pack().cards[state.cardIndex % pack().cards.length];
+      advanceCard(currentCard.term);
       state.reveal = true;
+      state.cardIndex = pickNextCardIndex();
+      saveAndRender();
+    }
+
+    function markHard() {
+      const currentCard = pack().cards[state.cardIndex % pack().cards.length];
+      demoteCard(currentCard.term);
+      state.cardIndex = pickNextCardIndex();
+      state.reveal = false;
       saveAndRender();
     }
 
     function nextCard() {
-      state.cardIndex = (state.cardIndex + 1) % pack().cards.length;
+      state.cardIndex = pickNextCardIndex();
       state.reveal = false;
       saveAndRender();
     }
 
     function isKnown(term) {
-      return Boolean(state.known[knownKey(term)]);
+      return getCardBox(term) >= 5;
     }
 
     function knownKey(term) {
@@ -1479,8 +1666,14 @@
     function generateQuiz() {
       const cards = [...pack().cards];
       const promptCard = cards[randomIndex(cards.length)];
-      const distractors = shuffle(cards.filter((card) => card.term !== promptCard.term).map((card) => card.translation)).slice(0, optionCount() - 1);
-      currentQuiz = { prompt: promptCard.term, answer: promptCard.translation, options: shuffle([promptCard.translation, ...distractors]) };
+      const direction = Math.random() < 0.5 ? "forward" : "reverse";
+      const prompt = direction === "forward" ? promptCard.term : promptCard.translation;
+      const answer = direction === "forward" ? promptCard.translation : promptCard.term;
+      const distractors = shuffle(
+        cards.filter((card) => card.term !== promptCard.term)
+          .map((card) => direction === "forward" ? card.translation : card.term)
+      ).slice(0, optionCount() - 1);
+      currentQuiz = { prompt, answer, options: shuffle([answer, ...distractors]) };
       quizLocked = false;
       el.quizPrompt.textContent = currentQuiz.prompt;
       el.quizFeedback.textContent = "";
@@ -1697,9 +1890,11 @@
       const difficulty = state.difficulty;
       Object.assign(state, clone(defaults), { studyLanguage, uiLanguage, difficulty });
       registerSession();
+      state.cardIndex = pickNextCardIndex();
       generateQuiz();
       generatePhrase();
       generateAdvanced();
+      generateType();
       saveAndRender();
     }
 
@@ -1730,6 +1925,133 @@
     function clone(value) {
       return JSON.parse(JSON.stringify(value));
     }
+
+    // ── SRS (Leitner 5-box) ──────────────────────────────────────────────────
+
+    function todayStr() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function addDays(dateStr, days) {
+      const d = new Date(dateStr + "T00:00:00Z");
+      d.setUTCDate(d.getUTCDate() + days);
+      return d.toISOString().slice(0, 10);
+    }
+
+    function srsKey(term) {
+      return `${state.studyLanguage}:${term}`;
+    }
+
+    function getSrsEntry(term) {
+      return (state.srs || {})[srsKey(term)] || null;
+    }
+
+    // Returns box level 0-5 (0 = new, 5 = mastered). Backward-compat with old state.known.
+    function getCardBox(term) {
+      if (state.known && state.known[knownKey(term)]) return 5;
+      const entry = getSrsEntry(term);
+      return entry ? entry.box : 0;
+    }
+
+    function isCardDue(term) {
+      if (state.known && state.known[knownKey(term)]) return false;
+      const entry = getSrsEntry(term);
+      if (!entry) return true; // new card, always due
+      return entry.due <= todayStr();
+    }
+
+    // Move card one box forward; intervals in days: box1=1, box2=3, box3=7, box4=14, box5=30
+    function advanceCard(term) {
+      if (!state.srs) state.srs = {};
+      const key = srsKey(term);
+      const current = state.srs[key] || { box: 0 };
+      const newBox = Math.min(current.box + 1, 5);
+      const intervals = [1, 1, 3, 7, 14, 30];
+      state.srs[key] = { box: newBox, due: addDays(todayStr(), intervals[newBox] || 30) };
+      if (newBox >= 5) {
+        if (!state.known) state.known = {};
+        state.known[knownKey(term)] = true;
+      }
+    }
+
+    // Reset card to box 1, due tomorrow
+    function demoteCard(term) {
+      if (!state.srs) state.srs = {};
+      state.srs[srsKey(term)] = { box: 1, due: addDays(todayStr(), 1) };
+      if (state.known) delete state.known[knownKey(term)];
+    }
+
+    // Pick card index prioritising: (1) due cards not mastered, (2) unseen cards, (3) random
+    function pickNextCardIndex() {
+      const cards = pack().cards;
+      const due = cards.map((c, i) => ({ c, i })).filter(({ c }) => isCardDue(c.term) && getCardBox(c.term) < 5);
+      if (due.length) return due[randomIndex(due.length)].i;
+      const unseen = cards.map((c, i) => ({ c, i })).filter(({ c }) => !getSrsEntry(c.term) && !(state.known && state.known[knownKey(c.term)]));
+      if (unseen.length) return unseen[randomIndex(unseen.length)].i;
+      return randomIndex(cards.length);
+    }
+
+    function currentStreak() {
+      const sessions = state.sessions || {};
+      let streak = 0;
+      let check = todayStr();
+      for (let i = 0; i < 365; i++) {
+        if (sessions[check]) {
+          streak++;
+          check = addDays(check, -1);
+        } else {
+          break;
+        }
+      }
+      return streak;
+    }
+
+    // ── Type-it tab ──────────────────────────────────────────────────────────
+
+    function generateType() {
+      const cards = pack().cards;
+      currentType = cards[pickNextCardIndex()];
+      // For Mandarin always show characters → type English (most users lack IME)
+      typeDirection = state.studyLanguage === "mandarin" ? "forward" : (Math.random() < 0.5 ? "forward" : "reverse");
+      if (el.typePrompt) {
+        el.typePrompt.textContent = typeDirection === "forward" ? currentType.term : currentType.translation;
+      }
+      if (el.typePromptLabel) {
+        el.typePromptLabel.textContent = typeDirection === "forward" ? t("typeDirectionForward") : t("typeDirectionReverse");
+      }
+      if (el.typeDirection) {
+        el.typeDirection.textContent = currentType.category;
+      }
+      if (el.typeBoxChip) {
+        const box = getCardBox(currentType.term);
+        el.typeBoxChip.textContent = box === 0 ? t("srsNew") : box >= 5 ? t("srsLearned") : `${t("srsBox")} ${box}`;
+      }
+      if (el.typeInput) {
+        el.typeInput.value = "";
+        el.typeInput.placeholder = t("typeInputPlaceholder");
+      }
+      if (el.typeFeedback) el.typeFeedback.textContent = "";
+    }
+
+    function checkType() {
+      if (!currentType || !el.typeInput) return;
+      const input = el.typeInput.value.trim();
+      if (!input) return;
+      const expected = typeDirection === "forward" ? currentType.translation : currentType.term;
+      const preservePunctuation = state.studyLanguage === "mandarin";
+      if (canonicalSentence(input, { preservePunctuation }) === canonicalSentence(expected, { preservePunctuation })) {
+        advanceCard(currentType.term);
+        el.typeFeedback.textContent = t("typeCorrect");
+        el.typeFeedback.style.color = "var(--accent)";
+      } else {
+        demoteCard(currentType.term);
+        el.typeFeedback.textContent = t("typeIncorrect", { answer: expected });
+        el.typeFeedback.style.color = "var(--accent-2)";
+      }
+      saveAndRender();
+    }
+
+    // ────────────────────────────────────────────────────────────────────────
 
     function escapeHtml(value) {
       return String(value)
